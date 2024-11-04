@@ -1,0 +1,23 @@
+{
+    "moodAndHabbits": "Mood and Habbits",
+    "today": "Today",
+    "habbits": "Habbits",
+    "todos": "Todos",
+    "settings": "Settings",
+    "howIsYourMood": "How is your mood?",
+    "statistics": "Statistics",
+    "moodStatistics": "Mood statistics",
+    "entryDeleted": "Entry has been deleted!",
+    "undo": "Undo",
+    "hasBeenSaved": "{item} has been saved!",
+    "@hasBeenSaved": {
+         "type": "text",
+        "placeholders": {
+            "item": {}
+        }
+    },
+    "notEnoughDataYet": "Not enough data yet to show anything.",
+    "year": "Year",
+    "month": "Month",
+    "week": "Week"
+}

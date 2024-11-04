@@ -1,0 +1,31 @@
+name: mood_n_habbits
+description: "Simple flutter app to track your mood and habbits."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.5.4
+dependencies:
+  async: ^2.11.0
+  collection: ^1.18.0
+  d_chart: ^2.10.2
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  go_router: ^14.3.0
+  intl: any
+  path: ^1.9.0
+  path_provider: ^2.1.5
+  shared_preferences: ^2.3.2
+  sqflite: ^2.4.0
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
+  import_sorter: ^4.6.0
+
+flutter:
+  generate: true
+  uses-material-design: true
