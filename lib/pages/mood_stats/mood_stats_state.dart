@@ -40,19 +40,11 @@ class MoodStatsState {
 
     data.value = (
       lineChartData: [
-        TimeData(
-          domain: now,
-          measure: moods.first.mood.value,
-        ),
         ...moods.map(
           (mood) => TimeData(
             domain: mood.dateTime,
             measure: mood.mood.value,
           ),
-        ),
-        TimeData(
-          domain: since,
-          measure: moods.last.mood.value,
         ),
       ],
       moods: moods
