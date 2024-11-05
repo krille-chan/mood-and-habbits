@@ -54,6 +54,7 @@ class TodayPage extends StatelessWidget {
                           horizontal: 8.0,
                         ),
                         width: 48,
+                        clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
                           color: isActiveDate
                               ? theme.colorScheme.primaryContainer
@@ -91,10 +92,6 @@ class TodayPage extends StatelessWidget {
                                 color: isActiveDate
                                     ? theme.colorScheme.primary
                                     : theme.colorScheme.secondary,
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(8),
-                                  bottomRight: Radius.circular(8),
-                                ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Center(

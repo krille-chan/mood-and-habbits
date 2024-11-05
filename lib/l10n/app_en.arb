@@ -19,5 +19,6 @@
     "notEnoughDataYet": "Not enough data yet to show anything.",
     "year": "Year",
     "month": "Month",
-    "week": "Week"
+    "week": "Week",
+    "day": "Day"
 }

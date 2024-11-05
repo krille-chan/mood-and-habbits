@@ -40,6 +40,7 @@ class MoodStatsPage extends StatelessWidget {
                     Text(
                       context.l10n.notEnoughDataYet,
                       style: theme.textTheme.headlineSmall,
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
@@ -60,8 +61,11 @@ class MoodStatsPage extends StatelessWidget {
                               TimeRange.year => context.l10n.year,
                               TimeRange.month => context.l10n.month,
                               TimeRange.week => context.l10n.week,
-                              TimeRange.today => context.l10n.today,
+                              TimeRange.today => context.l10n.day,
                             },
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.labelSmall,
                           ),
                         ),
                       )
