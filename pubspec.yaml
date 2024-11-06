@@ -9,6 +9,7 @@ dependencies:
   async: ^2.11.0
   collection: ^1.18.0
   d_chart: ^2.10.2
+  dynamic_color: ^1.7.0
   flutter:
     sdk: flutter
   flutter_localizations:

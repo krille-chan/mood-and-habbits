@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,12 +21,20 @@ class AppState {
     return AppState._(
       await openDatabase(
         path.join(directory, '${AppConstants.applicationName}.sqflite'),
-        onCreate: createSchema,
+        onOpen: createSchema,
         onUpgrade: upgradeSchema,
         version: 2,
       ),
       await SharedPreferences.getInstance(),
     );
+  }
+
+  ColorScheme? getColorScheme(Brightness brightness) {
+    final storedColorInt = _sharedPreferences.getInt('primary_color');
+    if (storedColorInt == null) return null;
+    final color = Result(() => Color(storedColorInt)).asValue?.value;
+    if (color == null) return null;
+    return ColorScheme.fromSeed(seedColor: color, brightness: brightness);
   }
 
   ThemeMode get themeMode {
