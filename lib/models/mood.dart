@@ -2,11 +2,13 @@ class Mood {
   final int? databaseId;
   final MoodValue mood;
   final DateTime dateTime;
+  final String? label;
 
   const Mood({
     this.databaseId,
     required this.mood,
     required this.dateTime,
+    required this.label,
   });
 
   static const String databaseRowName = 'mood';
@@ -15,12 +17,14 @@ class Mood {
         if (databaseId != null) 'id': databaseId,
         'mood': mood.value,
         'time': dateTime.millisecondsSinceEpoch,
+        if (label != null) 'label': label,
       };
 
   factory Mood.fromDatabaseRow(Map<String, Object?> row) => Mood(
-        databaseId: row['id'] as int,
+        databaseId: row['id'] as int?,
         mood: MoodValue.values.singleWhere((mood) => mood.value == row['mood']),
         dateTime: DateTime.fromMillisecondsSinceEpoch(row['time'] as int),
+        label: row['label'] as String?,
       );
 }
 

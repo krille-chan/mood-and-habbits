@@ -82,8 +82,6 @@ class MoodStatsPage extends StatelessWidget {
                     child: DChartLineT(
                       layoutMargin: LayoutMargin(30, 10, 30, 10),
                       domainAxis: DomainAxis(
-                        showLine: true,
-                        tickLength: 0,
                         tickLabelFormatterT: (domain) {
                           final format = switch (state.timeRange.value) {
                             TimeRange.year => DateFormat.MMM(),
@@ -122,6 +120,7 @@ class MoodStatsPage extends StatelessWidget {
                 itemCount: moods.length,
                 itemBuilder: (context, i) {
                   final mood = moods[i];
+                  final label = mood.label;
 
                   final displayDate =
                       i == 0 || !mood.dateTime.isSameDay(moods[i - 1].dateTime);
@@ -143,19 +142,23 @@ class MoodStatsPage extends StatelessWidget {
                           ],
                         ),
                       Dismissible(
-                        key: ValueKey(moods[i].databaseId ?? i),
+                        key: ValueKey(mood.databaseId ?? i),
                         background: Material(
                           color: theme.colorScheme.errorContainer,
                           child: const Icon(Icons.delete_outlined),
                         ),
-                        onDismissed: (_) => state.deleteMood(context, moods[i]),
+                        onDismissed: (_) => state.deleteMood(context, mood),
                         child: ListTile(
                           leading: Text(
-                            moods[i].mood.emoji,
+                            mood.mood.emoji,
                             style: const TextStyle(fontSize: 32),
                           ),
-                          title:
-                              Text(DateFormat.Hm().format(moods[i].dateTime)),
+                          title: Text(
+                            MaterialLocalizations.of(context).formatTimeOfDay(
+                              TimeOfDay.fromDateTime(mood.dateTime),
+                            ),
+                          ),
+                          subtitle: label == null ? null : Text(label),
                         ),
                       ),
                     ],

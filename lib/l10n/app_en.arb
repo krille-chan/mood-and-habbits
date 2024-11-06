@@ -20,5 +20,8 @@
     "year": "Year",
     "month": "Month",
     "week": "Week",
-    "day": "Day"
+    "day": "Day",
+    "addNote": "Add optional note",
+    "save": "Save",
+    "cancel": "Cancel"
 }

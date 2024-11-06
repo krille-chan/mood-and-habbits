@@ -37,17 +37,49 @@ class MoodStatsState {
     };
 
     final moods = await appState.getMoods(since);
+    List<Mood>? moodsPerDay;
+
+    // Combine mood average by day
+    if (timeRange.value != TimeRange.today) {
+      final moodsByDay = <DateTime, List<Mood>>{};
+      for (final mood in moods) {
+        final date = DateTime(
+          mood.dateTime.year,
+          mood.dateTime.month,
+          mood.dateTime.day,
+        );
+        (moodsByDay[date] ??= []).add(mood);
+      }
+      moodsPerDay = moodsByDay.entries.map((day) {
+        final value =
+            (day.value.fold(0, (v, m) => v + m.mood.value) / day.value.length)
+                .round();
+        return Mood(
+          dateTime: day.key,
+          mood: MoodValue.values.singleWhere((mood) => mood.value == value),
+          label: null,
+        );
+      }).toList();
+    }
 
     data.value = (
       lineChartData: [
-        ...moods.map(
-          (mood) => TimeData(
-            domain: mood.dateTime,
-            measure: mood.mood.value,
+        if (moodsPerDay == null)
+          ...moods.map(
+            (mood) => TimeData(
+              domain: mood.dateTime,
+              measure: mood.mood.value,
+            ),
+          )
+        else
+          ...moodsPerDay.map(
+            (mood) => TimeData(
+              domain: mood.dateTime,
+              measure: mood.mood.value,
+            ),
           ),
-        ),
       ],
-      moods: moods
+      moods: moods,
     );
   }
 

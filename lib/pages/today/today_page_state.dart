@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:go_router/go_router.dart';
+
 import 'package:mood_n_habbits/models/app_state.dart';
 import 'package:mood_n_habbits/models/mood.dart';
 import 'package:mood_n_habbits/utils/get_l10n.dart';
+import 'package:mood_n_habbits/widgets/adaptive_dialog_button.dart';
+import 'package:mood_n_habbits/widgets/adaptive_dialog_textfield.dart';
 
 class TodayPageState {
   final AppState appState;
@@ -14,10 +18,38 @@ class TodayPageState {
     BuildContext context,
     MoodValue moodValue,
   ) async {
+    final labelInput = await showAdaptiveDialog<String>(
+      context: context,
+      builder: (context) {
+        final controller = TextEditingController();
+        return AlertDialog.adaptive(
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: Text(context.l10n.addNote),
+          ),
+          content: AdaptiveDialogTextField(
+            controller: controller,
+            placeholder: context.l10n.howIsYourMood,
+          ),
+          actions: [
+            AdaptiveDialogButton(
+              onPressed: () => context.pop<String?>(null),
+              label: context.l10n.cancel,
+            ),
+            AdaptiveDialogButton(
+              onPressed: () => context.pop<String>(controller.text),
+              label: context.l10n.save,
+            ),
+          ],
+        );
+      },
+    );
+    if (labelInput == null) return;
     await appState.addMood(
       Mood(
         mood: moodValue,
         dateTime: date.value ?? DateTime.now(),
+        label: labelInput.isEmpty ? null : labelInput,
       ),
     );
     if (!context.mounted) return;

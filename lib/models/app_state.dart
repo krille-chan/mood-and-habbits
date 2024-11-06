@@ -21,7 +21,8 @@ class AppState {
       await openDatabase(
         path.join(directory, '${AppConstants.applicationName}.sqflite'),
         onCreate: createSchema,
-        version: 1,
+        onUpgrade: upgradeSchema,
+        version: 2,
       ),
       await SharedPreferences.getInstance(),
     );
