@@ -24,11 +24,11 @@ class MoodAndHabbitsApp extends StatelessWidget {
         routerConfig: buildRouter(appState),
         theme: buildTheme(
           Brightness.light,
-          appState.getColorScheme(Brightness.light) ?? light,
+          appState.themeColor ?? light?.primary,
         ),
         darkTheme: buildTheme(
           Brightness.dark,
-          appState.getColorScheme(Brightness.light) ?? dark,
+          appState.themeColor ?? dark?.primary,
         ),
         themeMode: appState.themeMode,
         localizationsDelegates: AppLocalizations.localizationsDelegates,

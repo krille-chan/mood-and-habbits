@@ -29,12 +29,10 @@ class AppState {
     );
   }
 
-  ColorScheme? getColorScheme(Brightness brightness) {
+  Color? get themeColor {
     final storedColorInt = _sharedPreferences.getInt('primary_color');
     if (storedColorInt == null) return null;
-    final color = Result(() => Color(storedColorInt)).asValue?.value;
-    if (color == null) return null;
-    return ColorScheme.fromSeed(seedColor: color, brightness: brightness);
+    return Result(() => Color(storedColorInt)).asValue?.value;
   }
 
   ThemeMode get themeMode {

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-ThemeData buildTheme(Brightness brightness, ColorScheme? colorScheme) =>
-    ThemeData(
+ThemeData buildTheme(Brightness brightness, Color? color) => ThemeData(
       brightness: brightness,
-      colorScheme: colorScheme,
+      colorSchemeSeed: color,
       snackBarTheme: const SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
       ),
