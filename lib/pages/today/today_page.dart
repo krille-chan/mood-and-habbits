@@ -153,9 +153,10 @@ class TodayPage extends StatelessWidget {
                                       Text(context.l10n.today)
                                     else
                                       Text(DateFormat.yMd().format(date)),
-                                    Text(
-                                      ' ${MaterialLocalizations.of(context).formatTimeOfDay(date == null ? TimeOfDay.now() : TimeOfDay.fromDateTime(date))}',
-                                    ),
+                                    if (date != null)
+                                      Text(
+                                        ' ${MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(date))}',
+                                      ),
                                   ],
                                 ),
                               ),

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mood_n_habbits/models/app_state.dart';
 import 'package:mood_n_habbits/models/mood.dart';
 import 'package:mood_n_habbits/utils/get_l10n.dart';
+import 'package:mood_n_habbits/utils/same_day.dart';
 import 'package:mood_n_habbits/widgets/adaptive_dialog_button.dart';
 import 'package:mood_n_habbits/widgets/adaptive_dialog_textfield.dart';
 
@@ -62,7 +63,13 @@ class TodayPageState {
     );
   }
 
-  void setActiveDate(DateTime newDate) => date.value = newDate;
+  void setActiveDate(DateTime newDate) {
+    if (newDate.isSameDay(DateTime.now())) {
+      date.value = null;
+    } else {
+      date.value = newDate;
+    }
+  }
 
   void changeDate(BuildContext context) async {
     final oldDate = date.value ?? DateTime.now();

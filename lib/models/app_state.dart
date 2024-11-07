@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:async/async.dart';
-import 'package:collection/collection.dart';
 import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,15 +7,20 @@ import 'package:sqflite/sqflite.dart';
 import 'package:mood_n_habbits/config/app_constants.dart';
 import 'package:mood_n_habbits/models/database_schema.dart';
 import 'package:mood_n_habbits/models/mood.dart';
+import 'package:mood_n_habbits/models/preferences_extensions.dart';
 
 class AppState {
   final Database _database;
   final SharedPreferences _sharedPreferences;
 
-  const AppState._(this._database, this._sharedPreferences);
+  const AppState._(this._database, this._sharedPreferences, this.theme);
+
+  final ValueNotifier<({Color? primaryColor, ThemeMode? themeMode})> theme;
 
   static Future<AppState> init() async {
     final directory = await getDatabasesPath();
+    final preferences = await SharedPreferences.getInstance();
+
     return AppState._(
       await openDatabase(
         path.join(directory, '${AppConstants.applicationName}.sqflite'),
@@ -25,22 +28,38 @@ class AppState {
         onUpgrade: upgradeSchema,
         version: 2,
       ),
-      await SharedPreferences.getInstance(),
+      preferences,
+      ValueNotifier(
+        (
+          primaryColor: preferences.themeColor,
+          themeMode: preferences.themeMode,
+        ),
+      ),
     );
   }
 
-  Color? get themeColor {
-    final storedColorInt = _sharedPreferences.getInt('primary_color');
-    if (storedColorInt == null) return null;
-    return Result(() => Color(storedColorInt)).asValue?.value;
+  void setThemeColor(Color? color) async {
+    color == null
+        ? await _sharedPreferences.remove('primary_color')
+        : await _sharedPreferences.setInt(
+            'primary_color',
+            color.value,
+          );
+    theme.value = (
+      primaryColor: _sharedPreferences.themeColor,
+      themeMode: _sharedPreferences.themeMode,
+    );
   }
 
-  ThemeMode get themeMode {
-    final storedThemeMode = _sharedPreferences.getString('theme_mode');
-    if (storedThemeMode == null) return ThemeMode.system;
-    return ThemeMode.values
-            .singleWhereOrNull((mode) => mode.name == storedThemeMode) ??
-        ThemeMode.system;
+  void setThemeMode(ThemeMode mode) async {
+    await _sharedPreferences.setString(
+      'theme_mode',
+      mode.name,
+    );
+    theme.value = (
+      primaryColor: _sharedPreferences.themeColor,
+      themeMode: _sharedPreferences.themeMode,
+    );
   }
 
   Future<void> addMood(Mood mood) => _database.insert(

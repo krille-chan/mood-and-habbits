@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:mood_n_habbits/config/router.dart';
 import 'package:mood_n_habbits/models/app_state.dart';
 import 'package:mood_n_habbits/widgets/mood_and_habbits_app.dart';
 
@@ -10,5 +11,10 @@ void main() async {
 
   final appState = await AppState.init();
 
-  runApp(MoodAndHabbitsApp(appState));
+  runApp(
+    MoodAndHabbitsApp(
+      appState: appState,
+      router: buildRouter(appState),
+    ),
+  );
 }

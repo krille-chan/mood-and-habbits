@@ -23,5 +23,6 @@
     "day": "Day",
     "addNote": "Add optional note",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "systemTheme": "System theme"
 }

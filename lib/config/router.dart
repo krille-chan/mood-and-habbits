@@ -5,6 +5,7 @@ import 'package:mood_n_habbits/pages/habbits/habbits_page.dart';
 import 'package:mood_n_habbits/pages/mood_stats/mood_stats_page.dart';
 import 'package:mood_n_habbits/pages/mood_stats/mood_stats_state.dart';
 import 'package:mood_n_habbits/pages/settings/settings_page.dart';
+import 'package:mood_n_habbits/pages/settings/settings_page_state.dart';
 import 'package:mood_n_habbits/pages/today/today_page.dart';
 import 'package:mood_n_habbits/pages/today/today_page_state.dart';
 import 'package:mood_n_habbits/pages/todos/todos_page.dart';
@@ -39,7 +40,8 @@ GoRouter buildRouter(AppState appState) => GoRouter(
             ),
             GoRoute(
               path: '/settings',
-              builder: (context, state) => const SettingsPage(),
+              builder: (context, state) =>
+                  SettingsPage(SettingsPageState(appState)),
             ),
           ],
         ),

@@ -7,6 +7,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:mood_n_habbits/config/router.dart';
 import 'package:mood_n_habbits/models/app_state.dart';
 import 'package:mood_n_habbits/widgets/mood_and_habbits_app.dart';
 
@@ -14,6 +15,11 @@ void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     final appState = await AppState.init();
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MoodAndHabbitsApp(appState));
+    await tester.pumpWidget(
+      MoodAndHabbitsApp(
+        appState: appState,
+        router: buildRouter(appState),
+      ),
+    );
   });
 }
