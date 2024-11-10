@@ -26,29 +26,32 @@ class MoodStatsPage extends StatelessWidget {
           final moods = data.moods;
           final lineChartData = data.lineChartData;
           if (moods == null) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+            return const Center(child: CircularProgressIndicator.adaptive());
+          }
+          return ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
                   children: [
-                    const Icon(
-                      Icons.query_stats_outlined,
-                      size: 64,
+                    IconButton(
+                      icon: const Icon(Icons.chevron_left_outlined),
+                      onPressed: state.datePrev,
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      context.l10n.notEnoughDataYet,
-                      style: theme.textTheme.headlineSmall,
-                      textAlign: TextAlign.center,
+                    Expanded(
+                      child: TextButton(
+                        onPressed: state.dateReset,
+                        child:
+                            Text(DateFormat.yMEd().format(state.currentDate)),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.chevron_right_outlined),
+                      onPressed: state.dateNext,
                     ),
                   ],
                 ),
               ),
-            );
-          }
-          return ListView(
-            children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: SegmentedButton<TimeRange>(

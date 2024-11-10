@@ -13,6 +13,10 @@ class MoodStatsState {
     calcLineChartData();
   }
 
+  DateTime _date = DateTime.now();
+
+  DateTime get currentDate => _date;
+
   final ValueNotifier<TimeRange> timeRange = ValueNotifier(TimeRange.today);
 
   final ValueNotifier<
@@ -26,17 +30,59 @@ class MoodStatsState {
     ),
   );
 
+  void dateNext() {
+    switch (timeRange.value) {
+      case TimeRange.today:
+        _date = _date.add(const Duration(days: 1));
+      case TimeRange.week:
+        _date = _date.add(const Duration(days: 7));
+      case TimeRange.month:
+        if (_date.month < 12) {
+          _date = DateTime(_date.year, _date.month + 1, _date.day);
+        } else {
+          _date = DateTime(_date.year + 1, 1, _date.day);
+        }
+      case TimeRange.year:
+        _date = DateTime(_date.year + 1, _date.month, _date.day);
+    }
+    calcLineChartData();
+  }
+
+  void datePrev() {
+    switch (timeRange.value) {
+      case TimeRange.today:
+        _date = _date.subtract(const Duration(days: 1));
+      case TimeRange.week:
+        _date = _date.subtract(const Duration(days: 7));
+      case TimeRange.month:
+        if (_date.month > 1) {
+          _date = DateTime(_date.year, _date.month - 1, _date.day);
+        } else {
+          _date = DateTime(_date.year - 1, 12, _date.day);
+        }
+      case TimeRange.year:
+        _date = DateTime(_date.year - 1, _date.month, _date.day);
+    }
+    calcLineChartData();
+  }
+
+  void dateReset() {
+    _date = DateTime.now();
+    calcLineChartData();
+  }
+
   void calcLineChartData() async {
-    final now = DateTime.now();
     final since = switch (timeRange.value) {
-      TimeRange.year => DateTime(now.year, 1, 1),
-      TimeRange.month => DateTime(now.year, now.month, 1),
-      TimeRange.week => DateTime(now.year, now.month, now.day)
+      TimeRange.year => DateTime(_date.year, 1, 1),
+      TimeRange.month => DateTime(_date.year, _date.month, 1),
+      TimeRange.week => DateTime(_date.year, _date.month, _date.day)
           .subtract(const Duration(days: 7)),
-      TimeRange.today => DateTime(now.year, now.month, now.day),
+      TimeRange.today => DateTime(_date.year, _date.month, _date.day),
     };
 
-    final moods = await appState.getMoods(since);
+    final until = DateTime(_date.year, _date.month, _date.day, 23, 59, 59);
+
+    final moods = await appState.getMoods(since, until);
     List<Mood>? moodsPerDay;
 
     // Combine mood average by day

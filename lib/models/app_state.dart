@@ -106,10 +106,11 @@ class AppState {
         whereArgs: [id],
       );
 
-  Future<List<Mood>> getMoods(DateTime since) => _database.query(
+  Future<List<Mood>> getMoods(DateTime since, DateTime until) =>
+      _database.query(
         Mood.databaseRowName,
         orderBy: 'time DESC',
-        where: 'time > ?',
-        whereArgs: [since.millisecondsSinceEpoch],
+        where: 'time > ? AND time <= ?',
+        whereArgs: [since.millisecondsSinceEpoch, until.millisecondsSinceEpoch],
       ).then((rows) => rows.map((row) => Mood.fromDatabaseRow(row)).toList());
 }
