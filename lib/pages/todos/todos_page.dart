@@ -19,13 +19,15 @@ class TodosPage extends StatelessWidget {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             title: const Text('Todos'),
+            centerTitle: false,
             actions: todos == null || todos.isEmpty
                 ? null
                 : [
-                    IconButton(
-                      icon: const Icon(Icons.cleaning_services_outlined),
-                      onPressed: state.clearFinished,
-                    ),
+                    if (!data.reordering)
+                      IconButton(
+                        icon: const Icon(Icons.cleaning_services_outlined),
+                        onPressed: state.clearFinished,
+                      ),
                     IconButton(
                       icon: Icon(
                         data.reordering

@@ -44,26 +44,23 @@ class TodoCreationBottomSheet extends StatelessWidget {
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    if (time == null) return null;
     return DateTime(
       date.year,
       date.month,
       date.day,
-      time.hour,
-      time.minute,
+      time?.hour ?? 0,
+      time?.minute ?? 0,
     );
   }
 
   void _setStartDate(BuildContext context) async {
     final dateTime = await _pickDateTime(context);
-    if (dateTime == null) return;
-    _startDate.value = dateTime;
+    if (dateTime != null) _startDate.value = dateTime;
   }
 
   void _setDueDate(BuildContext context) async {
     final dateTime = await _pickDateTime(context);
-    if (dateTime == null) return;
-    _dueDate.value = dateTime;
+    if (dateTime != null) _dueDate.value = dateTime;
   }
 
   void _popAndCreateTodo(BuildContext context) => context.pop<Todo>(

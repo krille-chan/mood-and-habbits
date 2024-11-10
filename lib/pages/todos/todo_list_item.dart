@@ -22,7 +22,6 @@ class TodoListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final description = todo.description;
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -39,8 +38,7 @@ class TodoListItem extends StatelessWidget {
               ? ListTile(
                   title: _TodoListItemTitle(todo: todo),
                   subtitle: _TodoListItemSubtitle(
-                    description: description,
-                    theme: theme,
+                    todo: todo,
                     onEdit: onEdit,
                     onDelete: onDelete,
                   ),
@@ -51,8 +49,7 @@ class TodoListItem extends StatelessWidget {
                   onChanged: toggleDone,
                   title: _TodoListItemTitle(todo: todo),
                   subtitle: _TodoListItemSubtitle(
-                    description: description,
-                    theme: theme,
+                    todo: todo,
                     onEdit: onEdit,
                     onDelete: onDelete,
                   ),
@@ -64,21 +61,22 @@ class TodoListItem extends StatelessWidget {
 }
 
 class _TodoListItemSubtitle extends StatelessWidget {
+  final Todo todo;
   const _TodoListItemSubtitle({
-    required this.description,
-    required this.theme,
+    required this.todo,
     required this.onEdit,
     required this.onDelete,
   });
 
-  final String? description;
-  final ThemeData theme;
   final void Function()? onEdit;
   final void Function()? onDelete;
 
   @override
   Widget build(BuildContext context) {
-    final description = this.description;
+    final theme = Theme.of(context);
+    final description = todo.description;
+    final startDate = todo.startDate;
+    final dueDate = todo.dueDate;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -86,6 +84,8 @@ class _TodoListItemSubtitle extends StatelessWidget {
         if (description != null) Text(description),
         Row(
           children: [
+            if (startDate != null) Text(startDate.toString()),
+            if (dueDate != null) Text(dueDate.toString()),
             IconButton(
               style: IconButton.styleFrom(
                 shape: CircleBorder(
