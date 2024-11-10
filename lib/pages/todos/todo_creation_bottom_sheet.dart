@@ -178,6 +178,10 @@ class _TodoCreationBottomSheetState extends State<TodoCreationBottomSheet> {
           ValueListenableBuilder(
             valueListenable: _canSave,
             builder: (context, canSave, _) => ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.colorScheme.primary,
+                foregroundColor: theme.colorScheme.onPrimary,
+              ),
               onPressed: canSave ? () => _popAndCreateTodo(context) : null,
               child: Text(context.l10n.save),
             ),
