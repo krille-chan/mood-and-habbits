@@ -65,6 +65,7 @@ class SettingsPage extends StatelessWidget {
                       : dark?.primary;
               return GridView.builder(
                 shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 64,
                 ),
@@ -79,12 +80,12 @@ class SettingsPage extends StatelessWidget {
                           ? context.l10n.system
                           : '#${color.value.toRadixString(16).toUpperCase()}',
                       child: InkWell(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(32.0),
                         onTap: () => state.appState.setThemeColor(color),
                         child: Material(
                           color: color,
-                          elevation: 6,
-                          borderRadius: BorderRadius.circular(8),
+                          elevation: 1,
+                          borderRadius: BorderRadius.circular(32.0),
                           child: SizedBox(
                             width: colorPickerSize,
                             height: colorPickerSize,

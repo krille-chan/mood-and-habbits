@@ -21,6 +21,19 @@ class TodayPage extends StatelessWidget {
         final activeDate = date ?? DateTime.now();
         final now = DateTime.now();
         return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              activeDate.isSameDay(now)
+                  ? context.l10n.today
+                  : DateFormat.yMEd().format(activeDate),
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.calendar_month_outlined),
+                onPressed: () => state.changeDate(context),
+              ),
+            ],
+          ),
           body: SafeArea(
             child: ListView(
               children: [
@@ -28,27 +41,9 @@ class TodayPage extends StatelessWidget {
                   height: 103,
                   child: ListView.builder(
                     reverse: true,
-                    itemCount: 15,
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, i) {
-                      if (i == 14) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: IconButton(
-                              style: IconButton.styleFrom(
-                                backgroundColor:
-                                    theme.colorScheme.secondaryContainer,
-                                foregroundColor:
-                                    theme.colorScheme.onSecondaryContainer,
-                              ),
-                              icon: const Icon(Icons.calendar_month_outlined),
-                              onPressed: () => state.changeDate(context),
-                            ),
-                          ),
-                        );
-                      }
                       final tileDate = DateTime(
                         now.year,
                         now.month,
@@ -68,7 +63,7 @@ class TodayPage extends StatelessWidget {
                           color: isActiveDate
                               ? theme.colorScheme.primaryContainer
                               : theme.colorScheme.secondaryContainer,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(16.0),
                           border: Border.all(
                             color: isActiveDate
                                 ? theme.colorScheme.primary
@@ -77,7 +72,7 @@ class TodayPage extends StatelessWidget {
                         ),
                         child: InkWell(
                           onTap: () => state.setActiveDate(tileDate),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(16.0),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -128,7 +123,7 @@ class TodayPage extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: Material(
                     color: theme.colorScheme.surfaceContainer,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(16.0),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
