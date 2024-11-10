@@ -133,7 +133,7 @@ class _TodoListItemTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '(${todo.databaseId})${todo.title}',
+      todo.title,
       style: TextStyle(
         decoration: todo.finishedAt == null ? null : TextDecoration.lineThrough,
       ),
