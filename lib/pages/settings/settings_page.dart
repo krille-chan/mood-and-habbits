@@ -13,6 +13,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const colorPickerSize = 32.0;
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -20,6 +21,42 @@ class SettingsPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          ListTile(
+            title: Text(
+              context.l10n.setColorTheme,
+              style: TextStyle(
+                color: theme.colorScheme.secondary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SegmentedButton<ThemeMode>(
+              selected: {
+                state.appState.theme.value.themeMode ?? ThemeMode.system,
+              },
+              onSelectionChanged: (selected) =>
+                  state.appState.setThemeMode(selected.single),
+              segments: [
+                ButtonSegment(
+                  value: ThemeMode.light,
+                  label: Text(context.l10n.light),
+                  icon: const Icon(Icons.light_mode_outlined),
+                ),
+                ButtonSegment(
+                  value: ThemeMode.dark,
+                  label: Text(context.l10n.dark),
+                  icon: const Icon(Icons.dark_mode_outlined),
+                ),
+                ButtonSegment(
+                  value: ThemeMode.system,
+                  label: Text(context.l10n.system),
+                  icon: const Icon(Icons.auto_mode_outlined),
+                ),
+              ],
+            ),
+          ),
           DynamicColorBuilder(
             builder: (light, dark) {
               final systemColor =
@@ -39,7 +76,7 @@ class SettingsPage extends StatelessWidget {
                     padding: const EdgeInsets.all(12.0),
                     child: Tooltip(
                       message: customColors[i] == null
-                          ? context.l10n.systemTheme
+                          ? context.l10n.system
                           : '#${color.value.toRadixString(16).toUpperCase()}',
                       child: InkWell(
                         borderRadius: BorderRadius.circular(8),
@@ -72,6 +109,33 @@ class SettingsPage extends StatelessWidget {
                 },
               );
             },
+          ),
+          Divider(color: theme.colorScheme.surfaceContainer),
+          ListTile(
+            title: Text(
+              context.l10n.appDataSettings,
+              style: TextStyle(
+                color: theme.colorScheme.secondary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text(context.l10n.importData),
+            leading: const Icon(Icons.upload_outlined),
+            onTap: () => state.importAppData(context),
+          ),
+          ListTile(
+            title: Text(context.l10n.exportData),
+            leading: const Icon(Icons.download_outlined),
+            onTap: () => state.exportAppData(context),
+          ),
+          ListTile(
+            iconColor: theme.colorScheme.error,
+            textColor: theme.colorScheme.error,
+            title: Text(context.l10n.resetData),
+            leading: const Icon(Icons.delete_forever_outlined),
+            onTap: () => state.deleteAppData(context),
           ),
         ],
       ),

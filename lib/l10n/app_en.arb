@@ -24,5 +24,22 @@
     "addNote": "Add optional note",
     "save": "Save",
     "cancel": "Cancel",
-    "systemTheme": "System theme"
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark",
+    "setColorTheme": "Set color theme",
+    "resetData": "Reset app data",
+    "exportData": "Export app data",
+    "importData": "Import app data",
+    "appDataSettings": "App data settings",
+    "errorWhileImportingData": "Error while importing data...",
+    "resetDataWarning": "This will delete all your stored habbits, todos, your progress, your entire mood diary and all app data. Are you completely sure you want to do this? This can not be undone. It is recommended to export your data first.",
+    "allDataHasBeenReset": "All data has been reset!",
+    "importedCountDataSets": "Imported {count} data sets.",
+    "@importedCountDataSets": {
+         "type": "text",
+        "placeholders": {
+            "count": {}
+        }
+    }
 }

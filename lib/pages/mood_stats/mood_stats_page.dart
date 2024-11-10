@@ -25,7 +25,7 @@ class MoodStatsPage extends StatelessWidget {
         builder: (context, data, _) {
           final moods = data.moods;
           final lineChartData = data.lineChartData;
-          if (moods == null || moods.isEmpty) {
+          if (moods == null) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:path/path.dart' as path;
@@ -36,6 +38,37 @@ class AppState {
         ),
       ),
     );
+  }
+
+  Future<void> resetAllData() => _database.transaction(
+        (transaction) =>
+            Future.wait(databaseTables.map((db) => transaction.delete(db))),
+      );
+
+  Future<String> exportDataAsJson() async {
+    final json = <String, Object?>{};
+    for (final table in databaseTables) {
+      json[table] = await _database.query(table);
+    }
+    return jsonEncode(json);
+  }
+
+  Future<int> importDataFromJson(Map<String, Object?> json) async {
+    var counter = 0;
+    await _database.transaction((transaction) async {
+      for (final table in databaseTables) {
+        final rows = List<Map<String, Object?>>.from(json[table] as List);
+        for (final row in rows) {
+          final result = await transaction.insert(
+            table,
+            row,
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+          if (result != 0) counter++;
+        }
+      }
+    });
+    return counter;
   }
 
   void setThemeColor(Color? color) async {

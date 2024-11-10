@@ -15,6 +15,11 @@ Future<void> createSchema(Database database) async {
   return;
 }
 
+const Set<String> databaseTables = {
+  Mood.databaseRowName,
+  Todo.databaseRowName,
+};
+
 Future<void> upgradeSchema(
   Database database,
   int oldVersion,
