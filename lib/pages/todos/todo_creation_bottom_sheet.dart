@@ -6,11 +6,20 @@ import 'package:intl/intl.dart';
 import 'package:mood_n_habbits/models/todo.dart';
 import 'package:mood_n_habbits/utils/get_l10n.dart';
 
-class TodoCreationBottomSheet extends StatelessWidget {
+class TodoCreationBottomSheet extends StatefulWidget {
   final Todo? initialTodo;
 
-  TodoCreationBottomSheet({this.initialTodo, super.key}) {
-    final initialTodo = this.initialTodo;
+  const TodoCreationBottomSheet({this.initialTodo, super.key});
+
+  @override
+  State<TodoCreationBottomSheet> createState() =>
+      _TodoCreationBottomSheetState();
+}
+
+class _TodoCreationBottomSheetState extends State<TodoCreationBottomSheet> {
+  @override
+  void initState() {
+    final initialTodo = widget.initialTodo;
     if (initialTodo != null) {
       _titleController.text = initialTodo.title;
       _descriptionController.text = initialTodo.description ?? '';
@@ -21,13 +30,18 @@ class TodoCreationBottomSheet extends StatelessWidget {
     _titleController.addListener(() {
       _canSave.value = _titleController.text.trim().isNotEmpty;
     });
+
+    super.initState();
   }
 
   final TextEditingController _titleController = TextEditingController();
+
   final TextEditingController _descriptionController = TextEditingController();
 
   final ValueNotifier<DateTime?> _startDate = ValueNotifier(null);
+
   final ValueNotifier<DateTime?> _dueDate = ValueNotifier(null);
+
   final ValueNotifier<bool> _canSave = ValueNotifier(false);
 
   Future<DateTime?> _pickDateTime(BuildContext context) async {
@@ -65,7 +79,7 @@ class TodoCreationBottomSheet extends StatelessWidget {
 
   void _popAndCreateTodo(BuildContext context) => context.pop<Todo>(
         Todo(
-          databaseId: initialTodo?.databaseId,
+          databaseId: widget.initialTodo?.databaseId,
           title: _titleController.text.trim(),
           description: _descriptionController.text.isEmpty
               ? null
@@ -73,7 +87,7 @@ class TodoCreationBottomSheet extends StatelessWidget {
           createdAt: DateTime.now(),
           startDate: _startDate.value,
           dueDate: _dueDate.value,
-          finishedAt: initialTodo?.finishedAt,
+          finishedAt: widget.initialTodo?.finishedAt,
         ),
       );
 

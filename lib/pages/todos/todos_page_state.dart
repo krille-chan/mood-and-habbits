@@ -73,7 +73,7 @@ class TodosPageState {
   void createTodo(BuildContext context) async {
     final todo = await showModalBottomSheet<Todo>(
       context: context,
-      builder: (context) => TodoCreationBottomSheet(),
+      builder: (context) => const TodoCreationBottomSheet(),
     );
     if (todo == null) return;
     if (!context.mounted) return;
