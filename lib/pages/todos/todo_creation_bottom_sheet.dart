@@ -104,7 +104,7 @@ class _TodoCreationBottomSheetState extends State<TodoCreationBottomSheet> {
           icon: const Icon(Icons.close_outlined),
           onPressed: () => context.pop(null),
         ),
-        title: Text(context.l10n.todo),
+        title: Text(context.l10n.addOneTimeTodo),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),

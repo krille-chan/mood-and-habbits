@@ -18,7 +18,7 @@ class TodosPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: const Text('Todos'),
+            title: Text(context.l10n.oneTimeTodos),
             centerTitle: false,
             actions: todos == null || todos.isEmpty
                 ? null
