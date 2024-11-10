@@ -19,8 +19,14 @@ class TodosPageState {
     ),
   );
 
-  void _loadTodos() async {
+  void _loadTodos({bool shouldNotBeChanged = false}) async {
     final todos = await appState.getAllTodos();
+    if (shouldNotBeChanged) {
+      final hasChanged = todos.map((todo) => todo.databaseId) !=
+          data.value.todos?.map((todo) => todo.databaseId);
+      assert(!hasChanged);
+      if (!hasChanged) return;
+    }
     data.value = (todos: todos, reordering: data.value.reordering);
   }
 
@@ -39,8 +45,25 @@ class TodosPageState {
     _loadTodos();
   }
 
+  void editTodo(BuildContext context, Todo initialTodo) async {
+    final todo = await showModalBottomSheet<Todo>(
+      context: context,
+      builder: (context) => TodoCreationBottomSheet(initialTodo: initialTodo),
+    );
+    if (todo == null) return;
+    if (!context.mounted) return;
+
+    await appState.updateTodo(todo);
+    _loadTodos();
+  }
+
   void clearFinished() async {
     await appState.clearFinishedTodos();
+    _loadTodos();
+  }
+
+  void deleteTodo(int id) async {
+    await appState.deleteTodo(id);
     _loadTodos();
   }
 
@@ -57,5 +80,22 @@ class TodosPageState {
 
     await appState.createTodo(todo);
     _loadTodos();
+  }
+
+  void onReorder(int oldIndex, int newIndex) async {
+    final todos = data.value.todos!;
+
+    final fromId = todos[oldIndex].databaseId!;
+    final toId = newIndex == 0 ? null : todos[newIndex - 1].databaseId!;
+
+    if (newIndex > oldIndex) newIndex--;
+    if (oldIndex == newIndex) return;
+
+    todos.insert(newIndex, todos.removeAt(oldIndex));
+
+    data.value = (reordering: true, todos: todos);
+
+    await appState.changeTodoOrders(fromId, toId);
+    _loadTodos(shouldNotBeChanged: false);
   }
 }

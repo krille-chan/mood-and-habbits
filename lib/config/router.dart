@@ -25,24 +25,25 @@ GoRouter buildRouter(AppState appState) => GoRouter(
               builder: (context, state) => TodayPage(TodayPageState(appState)),
               routes: [
                 GoRoute(
+                  path: '/habbits',
+                  builder: (context, state) => const HabbitsPage(),
+                ),
+                GoRoute(
+                  path: '/todos',
+                  builder: (context, state) =>
+                      TodosPage(TodosPageState(appState)),
+                ),
+                GoRoute(
+                  path: '/settings',
+                  builder: (context, state) =>
+                      SettingsPage(SettingsPageState(appState)),
+                ),
+                GoRoute(
                   path: '/today/mood_stats',
                   builder: (context, state) =>
                       MoodStatsPage(MoodStatsState(appState)),
                 ),
               ],
-            ),
-            GoRoute(
-              path: '/habbits',
-              builder: (context, state) => const HabbitsPage(),
-            ),
-            GoRoute(
-              path: '/todos',
-              builder: (context, state) => TodosPage(TodosPageState(appState)),
-            ),
-            GoRoute(
-              path: '/settings',
-              builder: (context, state) =>
-                  SettingsPage(SettingsPageState(appState)),
             ),
           ],
         ),

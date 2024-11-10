@@ -17,6 +17,7 @@ class SettingsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Settings'),
       ),
       body: ListView(

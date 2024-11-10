@@ -145,27 +145,33 @@ class AppState {
       )
       .then((rows) => rows.map((json) => Todo.fromDatabaseRow(json)).toList());
 
-  Future<void> changeTodoOrders(int fromId, int toId) {
+  Future<void> changeTodoOrders(int fromId, int? toId) {
     assert(fromId != toId);
+
+    final oldIndex = toId == null
+        ? fromId
+        : fromId < toId
+            ? fromId - 1
+            : fromId;
+
     return _database.transaction((transaction) async {
-      if (toId > fromId) {
-        await transaction.update(
-          Todo.databaseRowName,
-          {'id': 'id + 1'},
-          where: 'id >= toId',
+      if (toId != null) {
+        await transaction.rawUpdate(
+          'UPDATE ${Todo.databaseRowName} SET id = id-1 WHERE id <= ?',
+          [toId],
         );
       } else {
-        await transaction.update(
+        final minIdQuery = await transaction.query(
           Todo.databaseRowName,
-          {'id': 'id - 1'},
-          where: 'id <= toId',
+          columns: ['min(id)'],
         );
+        toId = (minIdQuery.singleOrNull?['min(id)'] as int) - 1;
       }
       await transaction.update(
         Todo.databaseRowName,
         {'id': toId},
         where: 'id = ?',
-        whereArgs: [fromId],
+        whereArgs: [oldIndex],
       );
     });
   }

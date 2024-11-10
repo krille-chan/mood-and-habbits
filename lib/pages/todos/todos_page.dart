@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:mood_n_habbits/pages/todos/todo_list_item.dart';
 import 'package:mood_n_habbits/pages/todos/todos_page_state.dart';
 import 'package:mood_n_habbits/utils/get_l10n.dart';
 
@@ -16,6 +17,7 @@ class TodosPage extends StatelessWidget {
         final todos = data.todos;
         return Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             title: const Text('Todos'),
             actions: todos == null || todos.isEmpty
                 ? null
@@ -49,46 +51,44 @@ class TodosPage extends StatelessWidget {
                         color: theme.colorScheme.surfaceContainerHighest,
                       ),
                     )
-                  : ListView.builder(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      itemCount: todos.length,
-                      itemBuilder: (context, i) {
-                        final todo = todos[i];
-                        final description = todo.description;
-                        return Padding(
+                  : data.reordering
+                      ? ReorderableListView.builder(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0,
                             vertical: 8.0,
+                            horizontal: 16.0,
                           ),
-                          child: Material(
-                            color: theme.colorScheme.surfaceContainer,
-                            borderRadius: BorderRadius.circular(16.0),
-                            clipBehavior: Clip.hardEdge,
-                            child: Opacity(
-                              opacity: todo.finishedAt == null ? 1 : 0.5,
-                              child: CheckboxListTile.adaptive(
-                                value: todo.finishedAt != null,
-                                onChanged: (finished) => state.toggleDone(
-                                  todo,
-                                  finished == true,
-                                ),
-                                title: Text(
-                                  todo.title,
-                                  style: TextStyle(
-                                    decoration: todo.finishedAt == null
-                                        ? null
-                                        : TextDecoration.lineThrough,
-                                  ),
-                                ),
-                                subtitle: description == null
-                                    ? null
-                                    : Text(description),
-                              ),
+                          itemCount: todos.length,
+                          itemBuilder: (context, i) => TodoListItem(
+                            reordering: data.reordering,
+                            key: ValueKey(todos[i].databaseId),
+                            todo: todos[i],
+                          ),
+                          proxyDecorator: (child, i, __) => TodoListItem(
+                            reordering: data.reordering,
+                            key: ValueKey(todos[i].databaseId),
+                            todo: todos[i],
+                            flying: true,
+                          ),
+                          onReorder: state.onReorder,
+                        )
+                      : ListView.builder(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8.0,
+                            horizontal: 16.0,
+                          ),
+                          itemCount: todos.length,
+                          itemBuilder: (context, i) => TodoListItem(
+                            reordering: data.reordering,
+                            todo: todos[i],
+                            toggleDone: (b) => state.toggleDone(
+                              todos[i],
+                              b == true,
                             ),
+                            onEdit: () => state.editTodo(context, todos[i]),
+                            onDelete: () =>
+                                state.deleteTodo(todos[i].databaseId!),
                           ),
-                        );
-                      },
-                    ),
+                        ),
         );
       },
     );

@@ -7,7 +7,17 @@ import 'package:mood_n_habbits/models/todo.dart';
 import 'package:mood_n_habbits/utils/get_l10n.dart';
 
 class TodoCreationBottomSheet extends StatelessWidget {
-  TodoCreationBottomSheet({super.key}) {
+  final Todo? initialTodo;
+
+  TodoCreationBottomSheet({this.initialTodo, super.key}) {
+    final initialTodo = this.initialTodo;
+    if (initialTodo != null) {
+      _titleController.text = initialTodo.title;
+      _descriptionController.text = initialTodo.description ?? '';
+      _startDate.value = initialTodo.startDate;
+      _dueDate.value = initialTodo.dueDate;
+      _canSave.value = true;
+    }
     _titleController.addListener(() {
       _canSave.value = _titleController.text.trim().isNotEmpty;
     });
@@ -58,6 +68,7 @@ class TodoCreationBottomSheet extends StatelessWidget {
 
   void _popAndCreateTodo(BuildContext context) => context.pop<Todo>(
         Todo(
+          databaseId: initialTodo?.databaseId,
           title: _titleController.text.trim(),
           description: _descriptionController.text.isEmpty
               ? null
@@ -65,6 +76,7 @@ class TodoCreationBottomSheet extends StatelessWidget {
           createdAt: DateTime.now(),
           startDate: _startDate.value,
           dueDate: _dueDate.value,
+          finishedAt: initialTodo?.finishedAt,
         ),
       );
 
