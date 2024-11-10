@@ -41,8 +41,10 @@ class MoodStatsPage extends StatelessWidget {
                     Expanded(
                       child: TextButton(
                         onPressed: state.dateReset,
-                        child:
-                            Text(DateFormat.yMEd().format(state.currentDate)),
+                        child: Text(
+                          DateFormat.yMEd(context.l10n.localeName)
+                              .format(state.currentDate),
+                        ),
                       ),
                     ),
                     IconButton(
@@ -87,10 +89,14 @@ class MoodStatsPage extends StatelessWidget {
                       domainAxis: DomainAxis(
                         tickLabelFormatterT: (domain) {
                           final format = switch (state.timeRange.value) {
-                            TimeRange.year => DateFormat.MMM(),
-                            TimeRange.month => DateFormat.Md(),
-                            TimeRange.week => DateFormat.E(),
-                            TimeRange.today => DateFormat.Hm(),
+                            TimeRange.year =>
+                              DateFormat.MMM(context.l10n.localeName),
+                            TimeRange.month =>
+                              DateFormat.Md(context.l10n.localeName),
+                            TimeRange.week =>
+                              DateFormat.E(context.l10n.localeName),
+                            TimeRange.today =>
+                              DateFormat.Hm(context.l10n.localeName),
                           };
                           return format.format(domain);
                         },
@@ -138,7 +144,8 @@ class MoodStatsPage extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                DateFormat.yMMMEd().format(mood.dateTime),
+                                DateFormat.yMMMEd(context.l10n.localeName)
+                                    .format(mood.dateTime),
                               ),
                             ),
                             const Expanded(child: Divider()),

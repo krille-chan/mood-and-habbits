@@ -140,7 +140,10 @@ class _TodoCreationBottomSheetState extends State<TodoCreationBottomSheet> {
                     }
                     return TextButton.icon(
                       style: dateButtonStyle,
-                      label: Text(DateFormat.yMd().format(startDate)),
+                      label: Text(
+                        DateFormat.yMd(context.l10n.localeName)
+                            .format(startDate),
+                      ),
                       onPressed: () {
                         _startDate.value = null;
                       },
@@ -163,7 +166,9 @@ class _TodoCreationBottomSheetState extends State<TodoCreationBottomSheet> {
                     }
                     return TextButton.icon(
                       style: dateButtonStyle,
-                      label: Text(DateFormat.yMd().format(dueDate)),
+                      label: Text(
+                        DateFormat.yMd(context.l10n.localeName).format(dueDate),
+                      ),
                       onPressed: () {
                         _dueDate.value = null;
                       },

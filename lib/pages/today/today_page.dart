@@ -25,7 +25,7 @@ class TodayPage extends StatelessWidget {
             title: Text(
               activeDate.isSameDay(now)
                   ? context.l10n.today
-                  : DateFormat.yMEd().format(activeDate),
+                  : DateFormat.yMEd(context.l10n.localeName).format(activeDate),
             ),
             actions: [
               IconButton(
@@ -100,7 +100,8 @@ class TodayPage extends StatelessWidget {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Center(
                                     child: Text(
-                                      DateFormat.E().format(tileDate),
+                                      DateFormat.E(context.l10n.localeName)
+                                          .format(tileDate),
                                       maxLines: 1,
                                       style: TextStyle(
                                         color: isActiveDate
@@ -147,7 +148,11 @@ class TodayPage extends StatelessWidget {
                                         date.isSameDay(DateTime.now()))
                                       Text(context.l10n.today)
                                     else
-                                      Text(DateFormat.yMd().format(date)),
+                                      Text(
+                                        DateFormat.yMd(
+                                          context.l10n.localeName,
+                                        ).format(date),
+                                      ),
                                     if (date != null)
                                       Text(
                                         ' ${MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(date))}',
