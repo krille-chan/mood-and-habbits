@@ -1,36 +1,43 @@
-class Todo {
-  final int? databaseId;
-  final String task;
-  final String? description;
-  final DateTime createdAt;
+import 'package:mood_n_habbits/models/task.dart';
+
+class Todo extends Task {
   final DateTime? finishedAt;
+  final DateTime? startDate;
+  final DateTime? dueDate;
 
   const Todo({
-    this.databaseId,
-    required this.task,
-    this.description,
-    required this.createdAt,
+    super.databaseId,
+    required super.title,
+    super.description,
+    required super.createdAt,
     this.finishedAt,
+    this.startDate,
+    this.dueDate,
   });
 
   static const String databaseRowName = 'todo';
 
+  @override
   Map<String, Object?> toDatabaseRow() => {
-        if (databaseId != null) 'id': databaseId,
-        'task': task,
-        if (description != null) 'description': description,
-        'createdAt': createdAt.millisecondsSinceEpoch,
-        if (finishedAt != null)
-          'finishedAt': finishedAt?.millisecondsSinceEpoch,
+        ...super.toDatabaseRow(),
+        'finishedAt': finishedAt?.millisecondsSinceEpoch,
+        if (startDate != null) 'startDate': startDate?.millisecondsSinceEpoch,
+        if (dueDate != null) 'dueDate': dueDate?.millisecondsSinceEpoch,
       };
 
   factory Todo.fromDatabaseRow(Map<String, Object?> row) => Todo(
         databaseId: row['id'] as int?,
-        task: row['task'] as String,
+        title: row['title'] as String,
         description: row['description'] as String?,
         createdAt: DateTime.fromMillisecondsSinceEpoch(row['createdAt'] as int),
         finishedAt: row['finishedAt'] == null
             ? null
             : DateTime.fromMillisecondsSinceEpoch(row['finishedAt'] as int),
+        startDate: row['startDate'] == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(row['startDate'] as int),
+        dueDate: row['dueDate'] == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(row['dueDate'] as int),
       );
 }

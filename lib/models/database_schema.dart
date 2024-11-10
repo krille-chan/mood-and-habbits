@@ -5,14 +5,27 @@ import 'package:sqflite/sqflite.dart';
 import 'package:mood_n_habbits/models/mood.dart';
 import 'package:mood_n_habbits/models/todo.dart';
 
-Future<void> createSchema(Database database) async {
-  await database.execute(
-    'CREATE TABLE IF NOT EXISTS ${Mood.databaseRowName} (id INTEGER PRIMARY KEY, mood INTEGER NOT NULL, time INTEGER NOT NULL, label TEXT)',
-  );
-  await database.execute(
-    'CREATE TABLE IF NOT EXISTS ${Todo.databaseRowName} (id INTEGER PRIMARY KEY, todo TEXT NOT NULL, description TEXT, createdAt INTEGER NOT NULL, finishedAt INTEGER NOT NULL)',
-  );
-  return;
+Future<void> createSchema(Database database) =>
+    database.transaction((transaction) async {
+      for (final table in DatabaseTables.values) {
+        await transaction.execute(
+          'CREATE TABLE IF NOT EXISTS ${table.name} ${table.creationQueryColumns}',
+        );
+      }
+    });
+
+enum DatabaseTables {
+  mood(
+    '(id INTEGER PRIMARY KEY, mood INTEGER NOT NULL, time INTEGER NOT NULL, label TEXT)',
+  ),
+  todo(
+    '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, finishedAt INTEGER, startDate INTEGER, dueDate INTEGER)',
+  ),
+  ;
+
+  const DatabaseTables(this.creationQueryColumns);
+
+  final String creationQueryColumns;
 }
 
 const Set<String> databaseTables = {

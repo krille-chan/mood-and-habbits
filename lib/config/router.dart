@@ -9,6 +9,7 @@ import 'package:mood_n_habbits/pages/settings/settings_page_state.dart';
 import 'package:mood_n_habbits/pages/today/today_page.dart';
 import 'package:mood_n_habbits/pages/today/today_page_state.dart';
 import 'package:mood_n_habbits/pages/todos/todos_page.dart';
+import 'package:mood_n_habbits/pages/todos/todos_page_state.dart';
 import 'package:mood_n_habbits/widgets/bottom_navigation_shell.dart';
 
 GoRouter buildRouter(AppState appState) => GoRouter(
@@ -36,7 +37,7 @@ GoRouter buildRouter(AppState appState) => GoRouter(
             ),
             GoRoute(
               path: '/todos',
-              builder: (context, state) => const TodosPage(),
+              builder: (context, state) => TodosPage(TodosPageState(appState)),
             ),
             GoRoute(
               path: '/settings',

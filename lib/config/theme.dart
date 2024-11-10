@@ -6,6 +6,10 @@ ThemeData buildTheme(Brightness brightness, Color? color) => ThemeData(
       snackBarTheme: const SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
       ),
+      inputDecorationTheme: const InputDecorationTheme(
+        filled: true,
+        border: UnderlineInputBorder(),
+      ),
     );
 
 const List<Color?> customColors = [

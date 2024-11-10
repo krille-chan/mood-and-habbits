@@ -10,6 +10,7 @@ import 'package:mood_n_habbits/config/app_constants.dart';
 import 'package:mood_n_habbits/models/database_schema.dart';
 import 'package:mood_n_habbits/models/mood.dart';
 import 'package:mood_n_habbits/models/preferences_extensions.dart';
+import 'package:mood_n_habbits/models/todo.dart';
 
 class AppState {
   final Database _database;
@@ -113,4 +114,59 @@ class AppState {
         where: 'time > ? AND time <= ?',
         whereArgs: [since.millisecondsSinceEpoch, until.millisecondsSinceEpoch],
       ).then((rows) => rows.map((row) => Mood.fromDatabaseRow(row)).toList());
+
+  Future<void> createTodo(Todo todo) => _database.insert(
+        Todo.databaseRowName,
+        todo.toDatabaseRow(),
+      );
+
+  Future<void> updateTodo(Todo todo) => _database.update(
+        Todo.databaseRowName,
+        todo.toDatabaseRow(),
+        where: 'id = ?',
+        whereArgs: [todo.databaseId],
+      );
+
+  Future<void> deleteTodo(int id) => _database.delete(
+        Todo.databaseRowName,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+  Future<void> clearFinishedTodos() => _database.delete(
+        Todo.databaseRowName,
+        where: 'finishedAt IS NOT NULL',
+      );
+
+  Future<List<Todo>> getAllTodos({bool finishedAtBottom = true}) => _database
+      .query(
+        Todo.databaseRowName,
+        orderBy: finishedAtBottom ? 'finishedAt IS NULL DESC' : null,
+      )
+      .then((rows) => rows.map((json) => Todo.fromDatabaseRow(json)).toList());
+
+  Future<void> changeTodoOrders(int fromId, int toId) {
+    assert(fromId != toId);
+    return _database.transaction((transaction) async {
+      if (toId > fromId) {
+        await transaction.update(
+          Todo.databaseRowName,
+          {'id': 'id + 1'},
+          where: 'id >= toId',
+        );
+      } else {
+        await transaction.update(
+          Todo.databaseRowName,
+          {'id': 'id - 1'},
+          where: 'id <= toId',
+        );
+      }
+      await transaction.update(
+        Todo.databaseRowName,
+        {'id': toId},
+        where: 'id = ?',
+        whereArgs: [fromId],
+      );
+    });
+  }
 }

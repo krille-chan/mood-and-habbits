@@ -41,5 +41,12 @@
         "placeholders": {
             "count": {}
         }
-    }
+    },
+    "todo": "Todo",
+    "createTodo": "Create todo",
+    "title": "Title",
+    "description": "Description",
+    "pleaseFillOut": "Please fill out",
+    "startTime": "Start time",
+    "dueTime": "Due time"
 }
