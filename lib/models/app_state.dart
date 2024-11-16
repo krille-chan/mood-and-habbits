@@ -138,12 +138,32 @@ class AppState {
         where: 'finishedAt IS NOT NULL',
       );
 
-  Future<List<Todo>> getAllTodos({bool finishedAtBottom = true}) => _database
-      .query(
-        Todo.databaseRowName,
-        orderBy: finishedAtBottom ? 'finishedAt IS NULL DESC' : null,
-      )
-      .then((rows) => rows.map((json) => Todo.fromDatabaseRow(json)).toList());
+  Future<List<Todo>> getAllTodos({
+    bool finishedAtBottom = true,
+    bool onlyActive = false,
+  }) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final todayEnd = today.add(const Duration(days: 1));
+    return _database
+        .query(
+          Todo.databaseRowName,
+          where: onlyActive
+              ? '(finishedAt >= ? AND finishedAt < ?) OR (finishedAt IS NULL AND startDate IS NULL) OR (finishedAT IS NULL AND startDate < ?)'
+              : null,
+          whereArgs: onlyActive
+              ? [
+                  today.millisecondsSinceEpoch,
+                  todayEnd.millisecondsSinceEpoch,
+                  today.millisecondsSinceEpoch,
+                ]
+              : null,
+          orderBy: finishedAtBottom ? 'finishedAt IS NULL DESC' : null,
+        )
+        .then(
+          (rows) => rows.map((json) => Todo.fromDatabaseRow(json)).toList(),
+        );
+  }
 
   Future<void> changeTodoOrders(int fromId, int? toId) {
     assert(fromId != toId);

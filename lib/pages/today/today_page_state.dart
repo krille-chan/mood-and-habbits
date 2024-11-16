@@ -6,12 +6,17 @@ import 'package:mood_n_habbits/models/app_state.dart';
 import 'package:mood_n_habbits/models/mood.dart';
 import 'package:mood_n_habbits/utils/get_l10n.dart';
 import 'package:mood_n_habbits/utils/same_day.dart';
+import 'package:mood_n_habbits/utils/todos_state_mixin.dart';
 import 'package:mood_n_habbits/widgets/adaptive_dialog_button.dart';
 import 'package:mood_n_habbits/widgets/adaptive_dialog_textfield.dart';
 
-class TodayPageState {
-  final AppState appState;
-  TodayPageState(this.appState);
+class TodayPageState with TodosStateMixin {
+  TodayPageState(AppState appState) {
+    this.appState = appState;
+    finishedAtBottom = false;
+    onlyActive = true;
+    loadTodos();
+  }
 
   final ValueNotifier<DateTime?> date = ValueNotifier(null);
 

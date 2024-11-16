@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:mood_n_habbits/models/mood.dart';
+import 'package:mood_n_habbits/models/todo.dart';
 import 'package:mood_n_habbits/pages/today/today_page_state.dart';
+import 'package:mood_n_habbits/pages/todos/todo_list_item.dart';
 import 'package:mood_n_habbits/utils/get_l10n.dart';
 import 'package:mood_n_habbits/utils/same_day.dart';
 
@@ -58,17 +60,12 @@ class TodayPage extends StatelessWidget {
                           horizontal: 8.0,
                         ),
                         width: 48,
-                        clipBehavior: Clip.hardEdge,
+                        clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
                           color: isActiveDate
                               ? theme.colorScheme.primaryContainer
-                              : theme.colorScheme.secondaryContainer,
+                              : theme.colorScheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(16.0),
-                          border: Border.all(
-                            color: isActiveDate
-                                ? theme.colorScheme.primary
-                                : theme.colorScheme.secondaryContainer,
-                          ),
                         ),
                         child: InkWell(
                           onTap: () => state.setActiveDate(tileDate),
@@ -81,13 +78,13 @@ class TodayPage extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Center(
                                   child: Text(
-                                    tileDate.day.toString(),
+                                    DateFormat.E(context.l10n.localeName)
+                                        .format(tileDate),
                                     style: TextStyle(
                                       color: isActiveDate
                                           ? theme.colorScheme.onPrimaryContainer
-                                          : theme
-                                              .colorScheme.onSecondaryContainer,
-                                      fontWeight: FontWeight.bold,
+                                          : theme.colorScheme.onSurface,
+                                      fontSize: 12,
                                     ),
                                   ),
                                 ),
@@ -95,19 +92,20 @@ class TodayPage extends StatelessWidget {
                               Material(
                                 color: isActiveDate
                                     ? theme.colorScheme.primary
-                                    : theme.colorScheme.secondary,
+                                    : theme.colorScheme.surfaceContainer,
+                                borderRadius: BorderRadius.circular(16.0),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Center(
                                     child: Text(
-                                      DateFormat.E(context.l10n.localeName)
-                                          .format(tileDate),
+                                      tileDate.day.toString(),
                                       maxLines: 1,
                                       style: TextStyle(
                                         color: isActiveDate
                                             ? theme.colorScheme.onPrimary
-                                            : theme.colorScheme.onSecondary,
-                                        fontSize: 12,
+                                            : theme
+                                                .colorScheme.onPrimaryContainer,
+                                        fontSize: 15,
                                       ),
                                     ),
                                   ),
@@ -192,6 +190,35 @@ class TodayPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+                ValueListenableBuilder<List<Todo>?>(
+                  valueListenable: state.todos,
+                  builder: (context, todos, _) {
+                    if (todos == null) {
+                      return const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(16.0),
+                      itemCount: todos.length,
+                      itemBuilder: (context, i) => TodoListItem(
+                        todo: todos[i],
+                        reordering: false,
+                        toggleDone: (done) => state.toggleDone(
+                          todos[i],
+                          done == true,
+                        ),
+                        onEdit: () => state.editTodo(context, todos[i]),
+                        onDelete: () => state.deleteTodo(todos[i].databaseId!),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
