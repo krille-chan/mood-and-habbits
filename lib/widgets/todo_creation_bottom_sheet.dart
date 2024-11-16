@@ -104,12 +104,29 @@ class _TodoCreationBottomSheetState extends State<TodoCreationBottomSheet> {
           onPressed: () => context.pop(null),
         ),
         title: Text(context.l10n.addOneTimeTodo),
+        actions: [
+          ValueListenableBuilder(
+            valueListenable: _canSave,
+            builder: (context, canSave, _) => Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
+                ),
+                onPressed: canSave ? () => _popAndCreateTodo(context) : null,
+                child: Text(context.l10n.save),
+              ),
+            ),
+          ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
           TextField(
             controller: _titleController,
+            autofocus: true,
             decoration: InputDecoration(
               labelText: context.l10n.title,
             ),
@@ -177,18 +194,6 @@ class _TodoCreationBottomSheetState extends State<TodoCreationBottomSheet> {
                 ),
               ),
             ],
-          ),
-          const SizedBox(height: 16),
-          ValueListenableBuilder(
-            valueListenable: _canSave,
-            builder: (context, canSave, _) => ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: theme.colorScheme.onPrimary,
-              ),
-              onPressed: canSave ? () => _popAndCreateTodo(context) : null,
-              child: Text(context.l10n.save),
-            ),
           ),
         ],
       ),

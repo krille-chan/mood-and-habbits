@@ -51,7 +51,7 @@ class BottomNavigationShell extends StatelessWidget {
             label: context.l10n.habbits,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.list_outlined),
+            icon: const Icon(Icons.check_circle_outlined),
             selectedIcon: const Icon(Icons.list),
             label: context.l10n.todos,
           ),

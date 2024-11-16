@@ -194,6 +194,7 @@ class _TodoListItemTitle extends StatelessWidget {
       todo.title,
       style: TextStyle(
         decoration: todo.finishedAt == null ? null : TextDecoration.lineThrough,
+        fontWeight: FontWeight.w500,
       ),
     );
   }

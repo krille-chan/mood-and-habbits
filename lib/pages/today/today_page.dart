@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -222,6 +223,31 @@ class TodayPage extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          floatingActionButtonLocation: ExpandableFab.location,
+          floatingActionButton: ExpandableFab(
+            openButtonBuilder: RotateFloatingActionButtonBuilder(
+              child: const Icon(Icons.add_outlined),
+            ),
+            closeButtonBuilder: DefaultFloatingActionButtonBuilder(
+              child: const Icon(Icons.close_outlined),
+            ),
+            type: ExpandableFabType.fan,
+            distance: 70,
+            children: [
+              FloatingActionButton.extended(
+                heroTag: null,
+                onPressed: null,
+                icon: const Icon(Icons.sports_score_outlined),
+                label: Text(context.l10n.habbit),
+              ),
+              FloatingActionButton.extended(
+                heroTag: null,
+                onPressed: () => state.createTodo(context),
+                icon: const Icon(Icons.check_circle_outlined),
+                label: Text(context.l10n.todo),
+              ),
+            ],
           ),
         );
       },

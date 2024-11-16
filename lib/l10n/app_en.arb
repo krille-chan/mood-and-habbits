@@ -47,8 +47,9 @@
     "title": "Title",
     "description": "Description",
     "pleaseFillOut": "Please fill out",
-    "startTime": "Start time",
-    "dueTime": "Due time",
+    "startTime": "Start",
+    "dueTime": "Due",
     "oneTimeTodos": "One-time todos",
-    "addOneTimeTodo": "Add one-time todo"
+    "addOneTimeTodo": "Add one-time todo",
+    "habbit": "Habbit"
 }
