@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:intl/intl.dart';
+
 import 'package:mood_n_habbits/models/todo.dart';
+import 'package:mood_n_habbits/utils/get_l10n.dart';
 
 class TodoListItem extends StatelessWidget {
   final Todo todo;
@@ -82,10 +85,8 @@ class _TodoListItemSubtitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (description != null) Text(description),
-        Row(
+        Wrap(
           children: [
-            if (startDate != null) Text(startDate.toString()),
-            if (dueDate != null) Text(dueDate.toString()),
             IconButton(
               style: IconButton.styleFrom(
                 shape: CircleBorder(
@@ -118,9 +119,66 @@ class _TodoListItemSubtitle extends StatelessWidget {
               ),
               onPressed: onDelete,
             ),
+            if (startDate != null)
+              _DateTile(
+                startDate,
+                context.l10n.startTime,
+                onEdit: onEdit,
+              ),
+            if (dueDate != null)
+              _DateTile(
+                dueDate,
+                context.l10n.dueTime,
+                isLate: DateTime.now().isAfter(dueDate),
+                onEdit: onEdit,
+              ),
           ],
         ),
       ],
+    );
+  }
+}
+
+class _DateTile extends StatelessWidget {
+  final String label;
+  final DateTime date;
+  final bool isLate;
+  final void Function()? onEdit;
+
+  const _DateTile(
+    this.date,
+    this.label, {
+    this.isLate = false,
+    this.onEdit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Material(
+        color: isLate ? theme.colorScheme.errorContainer : Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(99.0),
+          side: BorderSide(
+            color: theme.dividerColor,
+          ),
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(99.0),
+          onTap: onEdit,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.5, horizontal: 8.0),
+            child: Text(
+              '$label: ${DateFormat.yMd(context.l10n.localeName).format(date)}, ${DateFormat.Hm(context.l10n.localeName).format(date)}',
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: isLate ? theme.colorScheme.onErrorContainer : null,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

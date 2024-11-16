@@ -139,7 +139,6 @@ class AppState {
       );
 
   Future<List<Todo>> getAllTodos({
-    bool finishedAtBottom = true,
     bool onlyActive = false,
   }) {
     final now = DateTime.now();
@@ -158,7 +157,6 @@ class AppState {
                   today.millisecondsSinceEpoch,
                 ]
               : null,
-          orderBy: finishedAtBottom ? 'finishedAt IS NULL DESC' : null,
         )
         .then(
           (rows) => rows.map((json) => Todo.fromDatabaseRow(json)).toList(),

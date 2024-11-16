@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 
 import 'package:mood_n_habbits/models/app_state.dart';
 import 'package:mood_n_habbits/models/todo.dart';
-import 'package:mood_n_habbits/pages/todos/todo_creation_bottom_sheet.dart';
+import 'package:mood_n_habbits/widgets/todo_creation_bottom_sheet.dart';
 
 mixin TodosStateMixin {
   late AppState appState;
 
-  bool finishedAtBottom = true;
   bool onlyActive = false;
 
   final ValueNotifier<List<Todo>?> todos = ValueNotifier(null);
 
   void loadTodos({bool shouldNotBeChanged = false}) async {
     final newTodos = await appState.getAllTodos(
-      finishedAtBottom: finishedAtBottom,
       onlyActive: onlyActive,
     );
     if (shouldNotBeChanged) {

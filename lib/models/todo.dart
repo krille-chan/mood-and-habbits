@@ -21,8 +21,8 @@ class Todo extends Task {
   Map<String, Object?> toDatabaseRow() => {
         ...super.toDatabaseRow(),
         'finishedAt': finishedAt?.millisecondsSinceEpoch,
-        if (startDate != null) 'startDate': startDate?.millisecondsSinceEpoch,
-        if (dueDate != null) 'dueDate': dueDate?.millisecondsSinceEpoch,
+        'startDate': startDate?.millisecondsSinceEpoch,
+        'dueDate': dueDate?.millisecondsSinceEpoch,
       };
 
   factory Todo.fromDatabaseRow(Map<String, Object?> row) => Todo(

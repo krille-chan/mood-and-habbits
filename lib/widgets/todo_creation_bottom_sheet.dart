@@ -45,12 +45,11 @@ class _TodoCreationBottomSheetState extends State<TodoCreationBottomSheet> {
   final ValueNotifier<bool> _canSave = ValueNotifier(false);
 
   Future<DateTime?> _pickDateTime(BuildContext context) async {
+    const hundredYears = Duration(days: 365 * 100);
     final date = await showDatePicker(
       context: context,
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(
-        const Duration(days: 365 * 100),
-      ),
+      firstDate: DateTime.now().subtract(hundredYears),
+      lastDate: DateTime.now().add(hundredYears),
     );
     if (date == null) return null;
     if (!context.mounted) return null;

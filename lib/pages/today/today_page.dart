@@ -6,9 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:mood_n_habbits/models/mood.dart';
 import 'package:mood_n_habbits/models/todo.dart';
 import 'package:mood_n_habbits/pages/today/today_page_state.dart';
-import 'package:mood_n_habbits/pages/todos/todo_list_item.dart';
 import 'package:mood_n_habbits/utils/get_l10n.dart';
 import 'package:mood_n_habbits/utils/same_day.dart';
+import 'package:mood_n_habbits/widgets/todo_list_item.dart';
 
 class TodayPage extends StatelessWidget {
   final TodayPageState state;

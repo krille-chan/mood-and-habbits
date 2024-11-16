@@ -13,7 +13,6 @@ import 'package:mood_n_habbits/widgets/adaptive_dialog_textfield.dart';
 class TodayPageState with TodosStateMixin {
   TodayPageState(AppState appState) {
     this.appState = appState;
-    finishedAtBottom = false;
     onlyActive = true;
     loadTodos();
   }
