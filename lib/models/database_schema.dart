@@ -21,6 +21,9 @@ enum DatabaseTables {
   todo(
     '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, finishedAt INTEGER, startDate INTEGER, dueDate INTEGER)',
   ),
+  habbit(
+    '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, interval TEXT NOT NULL, days TEXT, emoji TEXT)',
+  ),
   ;
 
   const DatabaseTables(this.creationQueryColumns);
