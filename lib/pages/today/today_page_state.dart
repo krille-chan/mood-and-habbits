@@ -11,9 +11,11 @@ import 'package:mood_n_habbits/widgets/adaptive_dialog_button.dart';
 import 'package:mood_n_habbits/widgets/adaptive_dialog_textfield.dart';
 
 class TodayPageState with TodosStateMixin {
+  @override
+  DateTime get activeForDate => date.value ?? DateTime.now();
+
   TodayPageState(AppState appState) {
     this.appState = appState;
-    onlyActive = true;
     loadTodos();
   }
 

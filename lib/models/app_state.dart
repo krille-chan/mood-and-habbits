@@ -138,19 +138,22 @@ class AppState {
         where: 'finishedAt IS NOT NULL',
       );
 
-  Future<List<Todo>> getAllTodos({
-    bool onlyActive = false,
-  }) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final todayEnd = today.add(const Duration(days: 1));
+  Future<List<Todo>> getAllTodos({DateTime? activeForDate}) {
+    final today = activeForDate == null
+        ? null
+        : DateTime(
+            activeForDate.year,
+            activeForDate.month,
+            activeForDate.day,
+          );
+    final todayEnd = today?.add(const Duration(days: 1));
     return _database
         .query(
           Todo.databaseRowName,
-          where: onlyActive
+          where: today != null && todayEnd != null
               ? '(finishedAt >= ? AND finishedAt < ?) OR (finishedAt IS NULL AND startDate IS NULL) OR (finishedAT IS NULL AND startDate < ?)'
               : null,
-          whereArgs: onlyActive
+          whereArgs: today != null && todayEnd != null
               ? [
                   today.millisecondsSinceEpoch,
                   todayEnd.millisecondsSinceEpoch,

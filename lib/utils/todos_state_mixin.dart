@@ -7,14 +7,12 @@ import 'package:mood_n_habbits/widgets/todo_creation_bottom_sheet.dart';
 mixin TodosStateMixin {
   late AppState appState;
 
-  bool onlyActive = false;
+  DateTime? activeForDate;
 
   final ValueNotifier<List<Todo>?> todos = ValueNotifier(null);
 
   void loadTodos({bool shouldNotBeChanged = false}) async {
-    final newTodos = await appState.getAllTodos(
-      onlyActive: onlyActive,
-    );
+    final newTodos = await appState.getAllTodos(activeForDate: activeForDate);
     if (shouldNotBeChanged) {
       final hasChanged = newTodos.map((todo) => todo.databaseId) !=
           todos.value?.map((todo) => todo.databaseId);
