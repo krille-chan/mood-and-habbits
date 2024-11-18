@@ -4,15 +4,15 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:mood_n_habbits/config/app_constants.dart';
-import 'package:mood_n_habbits/config/theme.dart';
-import 'package:mood_n_habbits/models/app_state.dart';
+import 'package:mood_n_habits/config/app_constants.dart';
+import 'package:mood_n_habits/config/theme.dart';
+import 'package:mood_n_habits/models/app_state.dart';
 
-class MoodAndHabbitsApp extends StatelessWidget {
+class MoodAndHabitsApp extends StatelessWidget {
   final AppState appState;
   final GoRouter router;
 
-  const MoodAndHabbitsApp({
+  const MoodAndHabitsApp({
     required this.appState,
     required this.router,
     super.key,

@@ -6,11 +6,11 @@ import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:mood_n_habbits/config/app_constants.dart';
-import 'package:mood_n_habbits/models/database_schema.dart';
-import 'package:mood_n_habbits/models/mood.dart';
-import 'package:mood_n_habbits/models/preferences_extensions.dart';
-import 'package:mood_n_habbits/models/todo.dart';
+import 'package:mood_n_habits/config/app_constants.dart';
+import 'package:mood_n_habits/models/database_schema.dart';
+import 'package:mood_n_habits/models/mood.dart';
+import 'package:mood_n_habits/models/preferences_extensions.dart';
+import 'package:mood_n_habits/models/todo.dart';
 
 class AppState {
   final Database _database;

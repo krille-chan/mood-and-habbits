@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:mood_n_habbits/models/app_state.dart';
-import 'package:mood_n_habbits/models/todo.dart';
-import 'package:mood_n_habbits/widgets/todo_creation_bottom_sheet.dart';
+import 'package:mood_n_habits/models/app_state.dart';
+import 'package:mood_n_habits/models/todo.dart';
+import 'package:mood_n_habits/widgets/todo_creation_bottom_sheet.dart';
 
 mixin TodosStateMixin {
   late AppState appState;

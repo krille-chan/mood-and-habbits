@@ -1,6 +1,6 @@
 {
-    "name": "mood_n_habbits",
-    "short_name": "mood_n_habbits",
+    "name": "mood_n_habits",
+    "short_name": "mood_n_habits",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

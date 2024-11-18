@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
-import 'package:mood_n_habbits/models/todo.dart';
-import 'package:mood_n_habbits/utils/get_l10n.dart';
+import 'package:mood_n_habits/models/todo.dart';
+import 'package:mood_n_habits/utils/get_l10n.dart';
 
 class TodoListItem extends StatelessWidget {
   final Todo todo;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:mood_n_habbits/models/app_state.dart';
-import 'package:mood_n_habbits/utils/todos_state_mixin.dart';
+import 'package:mood_n_habits/models/app_state.dart';
+import 'package:mood_n_habits/utils/todos_state_mixin.dart';
 
 class TodosPageState with TodosStateMixin {
   TodosPageState(AppState appState) {

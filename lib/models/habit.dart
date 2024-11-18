@@ -1,11 +1,11 @@
-import 'package:mood_n_habbits/models/task.dart';
+import 'package:mood_n_habits/models/task.dart';
 
-class Habbit extends Task {
-  final HabbitInterval interval;
+class Habit extends Task {
+  final HabitInterval interval;
   final List<int>? days;
   final String? emoji;
 
-  Habbit({
+  Habit({
     super.databaseId,
     required super.title,
     super.description,
@@ -23,16 +23,16 @@ class Habbit extends Task {
         'emoji': emoji,
       };
 
-  factory Habbit.fromDatabaseRow(Map<String, Object?> row) => Habbit(
+  factory Habit.fromDatabaseRow(Map<String, Object?> row) => Habit(
         databaseId: row['id'] as int?,
         title: row['title'] as String,
         description: row['description'] as String?,
         createdAt: DateTime.fromMillisecondsSinceEpoch(row['createdAt'] as int),
         interval:
-            HabbitInterval.values.singleWhere((i) => i.name == row['interval']),
+            HabitInterval.values.singleWhere((i) => i.name == row['interval']),
         days: (row['days'] as String?)?.split(',').map(int.parse).toList(),
         emoji: row['emoji'] as String?,
       );
 }
 
-enum HabbitInterval { daily, daysInWeek, daysInMonth, continuesly }
+enum HabitInterval { daily, daysInWeek, daysInMonth, continuesly }

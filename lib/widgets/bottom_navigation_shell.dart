@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 
-import 'package:mood_n_habbits/utils/get_l10n.dart';
+import 'package:mood_n_habits/utils/get_l10n.dart';
 
 class BottomNavigationShell extends StatelessWidget {
   final List<String> pathSegments;
@@ -22,7 +22,7 @@ class BottomNavigationShell extends StatelessWidget {
             ? 0
             : switch (pathSegments[1]) {
                 'today' => 0,
-                'habbits' => 1,
+                'habits' => 1,
                 'todos' => 2,
                 'settings' => 3,
                 _ => 0,
@@ -30,7 +30,7 @@ class BottomNavigationShell extends StatelessWidget {
         onDestinationSelected: (index) {
           switch (index) {
             case 1:
-              context.go('/habbits');
+              context.go('/habits');
             case 2:
               context.go('/todos');
             case 3:
@@ -48,7 +48,7 @@ class BottomNavigationShell extends StatelessWidget {
           NavigationDestination(
             icon: const Icon(Icons.sports_score_outlined),
             selectedIcon: const Icon(Icons.sports_score),
-            label: context.l10n.habbits,
+            label: context.l10n.habits,
           ),
           NavigationDestination(
             icon: const Icon(Icons.check_circle_outlined),

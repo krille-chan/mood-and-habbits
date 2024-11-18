@@ -7,9 +7,9 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:mood_n_habbits/models/habbit.dart';
-import 'package:mood_n_habbits/models/mood.dart';
-import 'package:mood_n_habbits/models/todo.dart';
+import 'package:mood_n_habits/models/habit.dart';
+import 'package:mood_n_habits/models/mood.dart';
+import 'package:mood_n_habits/models/todo.dart';
 
 void main() {
   test('Moods', () {
@@ -38,19 +38,19 @@ void main() {
       todo.toDatabaseRow(),
     );
   });
-  test('Habbits', () {
-    final habbit = Habbit(
+  test('Habits', () {
+    final habit = Habit(
       databaseId: 0,
       title: 'test',
       createdAt: DateTime.now(),
       description: 'test',
-      interval: HabbitInterval.daysInWeek,
+      interval: HabitInterval.daysInWeek,
       days: [0, 3],
       emoji: '',
     );
     expect(
-      Habbit.fromDatabaseRow(habbit.toDatabaseRow()).toDatabaseRow(),
-      habbit.toDatabaseRow(),
+      Habit.fromDatabaseRow(habit.toDatabaseRow()).toDatabaseRow(),
+      habit.toDatabaseRow(),
     );
   });
 }

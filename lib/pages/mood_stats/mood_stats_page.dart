@@ -4,10 +4,10 @@ import 'package:collection/collection.dart';
 import 'package:d_chart/d_chart.dart';
 import 'package:intl/intl.dart';
 
-import 'package:mood_n_habbits/models/mood.dart';
-import 'package:mood_n_habbits/pages/mood_stats/mood_stats_state.dart';
-import 'package:mood_n_habbits/utils/get_l10n.dart';
-import 'package:mood_n_habbits/utils/same_day.dart';
+import 'package:mood_n_habits/models/mood.dart';
+import 'package:mood_n_habits/pages/mood_stats/mood_stats_state.dart';
+import 'package:mood_n_habits/utils/get_l10n.dart';
+import 'package:mood_n_habits/utils/same_day.dart';
 
 class MoodStatsPage extends StatelessWidget {
   final MoodStatsState state;

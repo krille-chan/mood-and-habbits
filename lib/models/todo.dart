@@ -1,4 +1,4 @@
-import 'package:mood_n_habbits/models/task.dart';
+import 'package:mood_n_habits/models/task.dart';
 
 class Todo extends Task {
   final DateTime? finishedAt;

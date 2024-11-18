@@ -1,7 +1,7 @@
 {
-    "moodAndHabbits": "Mood and Habbits",
+    "moodAndHabits": "Mood and Habits",
     "today": "Today",
-    "habbits": "Habbits",
+    "habits": "Habits",
     "todos": "Todos",
     "settings": "Settings",
     "howIsYourMood": "How is your mood?",
@@ -33,7 +33,7 @@
     "importData": "Import app data",
     "appDataSettings": "App data settings",
     "errorWhileImportingData": "Error while importing data...",
-    "resetDataWarning": "This will delete all your stored habbits, todos, your progress, your entire mood diary and all app data. Are you completely sure you want to do this? This can not be undone. It is recommended to export your data first.",
+    "resetDataWarning": "This will delete all your stored habits, todos, your progress, your entire mood diary and all app data. Are you completely sure you want to do this? This can not be undone. It is recommended to export your data first.",
     "allDataHasBeenReset": "All data has been reset!",
     "importedCountDataSets": "Imported {count} data sets.",
     "@importedCountDataSets": {
@@ -51,5 +51,5 @@
     "dueTime": "Due",
     "oneTimeTodos": "One-time todos",
     "addOneTimeTodo": "Add one-time todo",
-    "habbit": "Habbit"
+    "habit": "Habit"
 }

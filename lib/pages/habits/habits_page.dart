@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class HabbitsPage extends StatelessWidget {
-  const HabbitsPage({super.key});
+class HabitsPage extends StatelessWidget {
+  const HabitsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Habbits'),
+        title: const Text('Habits'),
       ),
       body: const Placeholder(),
     );

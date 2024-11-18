@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:dynamic_color/dynamic_color.dart';
 
-import 'package:mood_n_habbits/config/theme.dart';
-import 'package:mood_n_habbits/pages/settings/settings_page_state.dart';
-import 'package:mood_n_habbits/utils/get_l10n.dart';
+import 'package:mood_n_habits/config/theme.dart';
+import 'package:mood_n_habits/pages/settings/settings_page_state.dart';
+import 'package:mood_n_habits/utils/get_l10n.dart';
 
 class SettingsPage extends StatelessWidget {
   final SettingsPageState state;

@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:mood_n_habbits/config/app_constants.dart';
-import 'package:mood_n_habbits/models/app_state.dart';
-import 'package:mood_n_habbits/utils/get_l10n.dart';
-import 'package:mood_n_habbits/widgets/adaptive_dialog_button.dart';
+import 'package:mood_n_habits/config/app_constants.dart';
+import 'package:mood_n_habits/models/app_state.dart';
+import 'package:mood_n_habits/utils/get_l10n.dart';
+import 'package:mood_n_habits/widgets/adaptive_dialog_button.dart';
 
 class SettingsPageState {
   final AppState appState;

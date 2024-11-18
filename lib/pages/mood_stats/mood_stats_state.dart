@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:d_chart/d_chart.dart';
 
-import 'package:mood_n_habbits/models/app_state.dart';
-import 'package:mood_n_habbits/models/mood.dart';
-import 'package:mood_n_habbits/utils/get_l10n.dart';
+import 'package:mood_n_habits/models/app_state.dart';
+import 'package:mood_n_habits/models/mood.dart';
+import 'package:mood_n_habits/utils/get_l10n.dart';
 
 class MoodStatsState {
   final AppState appState;

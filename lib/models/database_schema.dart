@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import 'package:sqflite/sqflite.dart';
 
-import 'package:mood_n_habbits/models/mood.dart';
-import 'package:mood_n_habbits/models/todo.dart';
+import 'package:mood_n_habits/models/mood.dart';
+import 'package:mood_n_habits/models/todo.dart';
 
 Future<void> createSchema(Database database) =>
     database.transaction((transaction) async {
@@ -21,7 +21,7 @@ enum DatabaseTables {
   todo(
     '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, finishedAt INTEGER, startDate INTEGER, dueDate INTEGER)',
   ),
-  habbit(
+  habit(
     '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, interval TEXT NOT NULL, days TEXT, emoji TEXT)',
   ),
   ;

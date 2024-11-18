@@ -1,5 +1,5 @@
-name: mood_n_habbits
-description: "Simple flutter app to track your mood and habbits."
+name: mood_n_habits
+description: "Simple flutter app to track your mood and habits."
 publish_to: 'none'
 version: 0.1.0+1
 

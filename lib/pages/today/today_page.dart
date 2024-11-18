@@ -4,12 +4,12 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import 'package:mood_n_habbits/models/mood.dart';
-import 'package:mood_n_habbits/models/todo.dart';
-import 'package:mood_n_habbits/pages/today/today_page_state.dart';
-import 'package:mood_n_habbits/utils/get_l10n.dart';
-import 'package:mood_n_habbits/utils/same_day.dart';
-import 'package:mood_n_habbits/widgets/todo_list_item.dart';
+import 'package:mood_n_habits/models/mood.dart';
+import 'package:mood_n_habits/models/todo.dart';
+import 'package:mood_n_habits/pages/today/today_page_state.dart';
+import 'package:mood_n_habits/utils/get_l10n.dart';
+import 'package:mood_n_habits/utils/same_day.dart';
+import 'package:mood_n_habits/widgets/todo_list_item.dart';
 
 class TodayPage extends StatelessWidget {
   final TodayPageState state;
@@ -239,7 +239,7 @@ class TodayPage extends StatelessWidget {
                 heroTag: null,
                 onPressed: null,
                 icon: const Icon(Icons.sports_score_outlined),
-                label: Text(context.l10n.habbit),
+                label: Text(context.l10n.habit),
               ),
               FloatingActionButton.extended(
                 heroTag: null,

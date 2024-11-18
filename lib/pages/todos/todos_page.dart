@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:mood_n_habbits/models/todo.dart';
-import 'package:mood_n_habbits/pages/todos/todos_page_state.dart';
-import 'package:mood_n_habbits/utils/get_l10n.dart';
-import 'package:mood_n_habbits/widgets/todo_list_item.dart';
+import 'package:mood_n_habits/models/todo.dart';
+import 'package:mood_n_habits/pages/todos/todos_page_state.dart';
+import 'package:mood_n_habits/utils/get_l10n.dart';
+import 'package:mood_n_habits/widgets/todo_list_item.dart';
 
 class TodosPage extends StatelessWidget {
   final TodosPageState state;
