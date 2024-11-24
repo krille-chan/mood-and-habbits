@@ -33,6 +33,7 @@ void main() {
       finishedAt: DateTime.now(),
       dueDate: DateTime.now(),
       description: 'test',
+      sortOrder: 3,
     );
     expect(
       Todo.fromDatabaseRow(todo.toDatabaseRow()).toDatabaseRow(),

@@ -19,7 +19,7 @@ enum DatabaseTables {
     '(id INTEGER PRIMARY KEY, mood INTEGER NOT NULL, time INTEGER NOT NULL, label TEXT)',
   ),
   todo(
-    '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, finishedAt INTEGER, startDate INTEGER, dueDate INTEGER)',
+    '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, finishedAt INTEGER, startDate INTEGER, dueDate INTEGER, sortOrder INTEGER NOT NULL)',
   ),
   habit(
     '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, interval TEXT NOT NULL, days TEXT, emoji TEXT)',

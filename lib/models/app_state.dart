@@ -115,10 +115,22 @@ class AppState {
         whereArgs: [since.millisecondsSinceEpoch, until.millisecondsSinceEpoch],
       ).then((rows) => rows.map((row) => Mood.fromDatabaseRow(row)).toList());
 
-  Future<void> createTodo(Todo todo) => _database.insert(
-        Todo.databaseRowName,
-        todo.toDatabaseRow(),
-      );
+  Future<void> createTodo(Todo todo) async {
+    final minSortOrderResult = await _database.query(
+      Todo.databaseRowName,
+      columns: ['min(sortOrder)'],
+    );
+    final minSortOrder =
+        (minSortOrderResult.singleOrNull?['min(sortOrder)'] as int?) ?? 0;
+
+    await _database.insert(
+      Todo.databaseRowName,
+      {
+        ...todo.toDatabaseRow(),
+        'sortOrder': minSortOrder - 1,
+      },
+    );
+  }
 
   Future<void> updateTodo(Todo todo) => _database.update(
         Todo.databaseRowName,
@@ -150,6 +162,7 @@ class AppState {
     return _database
         .query(
           Todo.databaseRowName,
+          orderBy: 'sortOrder',
           where: today != null && todayEnd != null
               ? '(finishedAt >= ? AND finishedAt < ?) OR (finishedAt IS NULL AND startDate IS NULL) OR (finishedAT IS NULL AND startDate < ?)'
               : null,
@@ -166,33 +179,26 @@ class AppState {
         );
   }
 
-  Future<void> changeTodoOrders(int fromId, int? toId) {
-    assert(fromId != toId);
-
-    final oldIndex = toId == null
-        ? fromId
-        : fromId < toId
-            ? fromId - 1
-            : fromId;
+  Future<void> changeTodoOrders(Todo from, Todo to) {
+    assert(from.databaseId != to.databaseId);
 
     return _database.transaction((transaction) async {
-      if (toId != null) {
+      if (to.sortOrder! > from.sortOrder!) {
         await transaction.rawUpdate(
-          'UPDATE ${Todo.databaseRowName} SET id = id-1 WHERE id <= ?',
-          [toId],
+          'UPDATE ${Todo.databaseRowName} SET sortOrder = sortOrder-1 WHERE sortOrder <= ?',
+          [to.sortOrder],
         );
       } else {
-        final minIdQuery = await transaction.query(
-          Todo.databaseRowName,
-          columns: ['min(id)'],
+        await transaction.rawUpdate(
+          'UPDATE ${Todo.databaseRowName} SET sortOrder = sortOrder+1 WHERE sortOrder >= ?',
+          [to.sortOrder],
         );
-        toId = (minIdQuery.singleOrNull?['min(id)'] as int) - 1;
       }
       await transaction.update(
         Todo.databaseRowName,
-        {'id': toId},
+        {'sortOrder': to.sortOrder},
         where: 'id = ?',
-        whereArgs: [oldIndex],
+        whereArgs: [from.databaseId],
       );
     });
   }

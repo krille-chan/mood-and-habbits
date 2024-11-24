@@ -21,17 +21,17 @@ class TodosPageState with TodosStateMixin {
   void onReorder(int oldIndex, int newIndex) async {
     final todos = this.todos.value!;
 
-    final fromId = todos[oldIndex].databaseId!;
-    final toId = newIndex == 0 ? null : todos[newIndex - 1].databaseId!;
-
     if (newIndex > oldIndex) newIndex--;
     if (oldIndex == newIndex) return;
+
+    final from = todos[oldIndex];
+    final to = todos[newIndex];
 
     todos.insert(newIndex, todos.removeAt(oldIndex));
 
     this.todos.value = todos;
 
-    await appState.changeTodoOrders(fromId, toId);
+    await appState.changeTodoOrders(from, to);
     loadTodos(shouldNotBeChanged: false);
   }
 }
