@@ -4,7 +4,6 @@ class Todo extends Task {
   final DateTime? finishedAt;
   final DateTime? startDate;
   final DateTime? dueDate;
-  final int? sortOrder;
 
   const Todo({
     super.databaseId,
@@ -14,10 +13,8 @@ class Todo extends Task {
     this.finishedAt,
     this.startDate,
     this.dueDate,
-    this.sortOrder,
+    super.sortOrder,
   });
-
-  static const String databaseRowName = 'todo';
 
   @override
   Map<String, Object?> toDatabaseRow() => {
@@ -25,7 +22,6 @@ class Todo extends Task {
         'finishedAt': finishedAt?.millisecondsSinceEpoch,
         'startDate': startDate?.millisecondsSinceEpoch,
         'dueDate': dueDate?.millisecondsSinceEpoch,
-        'sortOrder': sortOrder,
       };
 
   factory Todo.fromDatabaseRow(Map<String, Object?> row) => Todo(

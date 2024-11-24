@@ -8,6 +8,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:mood_n_habits/config/app_constants.dart';
 import 'package:mood_n_habits/models/database_schema.dart';
+import 'package:mood_n_habits/models/habit.dart';
 import 'package:mood_n_habits/models/mood.dart';
 import 'package:mood_n_habits/models/preferences_extensions.dart';
 import 'package:mood_n_habits/models/todo.dart';
@@ -42,14 +43,15 @@ class AppState {
   }
 
   Future<void> resetAllData() => _database.transaction(
-        (transaction) =>
-            Future.wait(databaseTables.map((db) => transaction.delete(db))),
+        (transaction) => Future.wait(
+          DatabaseTables.values.map((db) => transaction.delete(db.name)),
+        ),
       );
 
   Future<String> exportDataAsJson() async {
     final json = <String, Object?>{};
-    for (final table in databaseTables) {
-      json[table] = await _database.query(table);
+    for (final table in DatabaseTables.values) {
+      json[table.name] = await _database.query(table.name);
     }
     return jsonEncode(json);
   }
@@ -57,11 +59,11 @@ class AppState {
   Future<int> importDataFromJson(Map<String, Object?> json) async {
     var counter = 0;
     await _database.transaction((transaction) async {
-      for (final table in databaseTables) {
-        final rows = List<Map<String, Object?>>.from(json[table] as List);
+      for (final table in DatabaseTables.values) {
+        final rows = List<Map<String, Object?>>.from(json[table.name] as List);
         for (final row in rows) {
           final result = await transaction.insert(
-            table,
+            table.name,
             row,
             conflictAlgorithm: ConflictAlgorithm.replace,
           );
@@ -117,14 +119,14 @@ class AppState {
 
   Future<void> createTodo(Todo todo) async {
     final minSortOrderResult = await _database.query(
-      Todo.databaseRowName,
+      DatabaseTables.todo.name,
       columns: ['min(sortOrder)'],
     );
     final minSortOrder =
         (minSortOrderResult.singleOrNull?['min(sortOrder)'] as int?) ?? 0;
 
     await _database.insert(
-      Todo.databaseRowName,
+      DatabaseTables.todo.name,
       {
         ...todo.toDatabaseRow(),
         'sortOrder': minSortOrder - 1,
@@ -132,21 +134,38 @@ class AppState {
     );
   }
 
+  Future<void> createHabit(Habit habit) async {
+    final minSortOrderResult = await _database.query(
+      DatabaseTables.habit.name,
+      columns: ['min(sortOrder)'],
+    );
+    final minSortOrder =
+        (minSortOrderResult.singleOrNull?['min(sortOrder)'] as int?) ?? 0;
+
+    await _database.insert(
+      DatabaseTables.todo.name,
+      {
+        ...habit.toDatabaseRow(),
+        'sortOrder': minSortOrder - 1,
+      },
+    );
+  }
+
   Future<void> updateTodo(Todo todo) => _database.update(
-        Todo.databaseRowName,
+        DatabaseTables.todo.name,
         todo.toDatabaseRow(),
         where: 'id = ?',
         whereArgs: [todo.databaseId],
       );
 
   Future<void> deleteTodo(int id) => _database.delete(
-        Todo.databaseRowName,
+        DatabaseTables.todo.name,
         where: 'id = ?',
         whereArgs: [id],
       );
 
   Future<void> clearFinishedTodos() => _database.delete(
-        Todo.databaseRowName,
+        DatabaseTables.todo.name,
         where: 'finishedAt IS NOT NULL',
       );
 
@@ -161,7 +180,7 @@ class AppState {
     final todayEnd = today?.add(const Duration(days: 1));
     return _database
         .query(
-          Todo.databaseRowName,
+          DatabaseTables.todo.name,
           orderBy: 'sortOrder',
           where: today != null && todayEnd != null
               ? '(finishedAt >= ? AND finishedAt < ?) OR (finishedAt IS NULL AND startDate IS NULL) OR (finishedAT IS NULL AND startDate < ?)'
@@ -185,17 +204,17 @@ class AppState {
     return _database.transaction((transaction) async {
       if (to.sortOrder! > from.sortOrder!) {
         await transaction.rawUpdate(
-          'UPDATE ${Todo.databaseRowName} SET sortOrder = sortOrder-1 WHERE sortOrder <= ?',
+          'UPDATE ${DatabaseTables.todo.name} SET sortOrder = sortOrder-1 WHERE sortOrder <= ?',
           [to.sortOrder],
         );
       } else {
         await transaction.rawUpdate(
-          'UPDATE ${Todo.databaseRowName} SET sortOrder = sortOrder+1 WHERE sortOrder >= ?',
+          'UPDATE ${DatabaseTables.todo.name} SET sortOrder = sortOrder+1 WHERE sortOrder >= ?',
           [to.sortOrder],
         );
       }
       await transaction.update(
-        Todo.databaseRowName,
+        DatabaseTables.todo.name,
         {'sortOrder': to.sortOrder},
         where: 'id = ?',
         whereArgs: [from.databaseId],

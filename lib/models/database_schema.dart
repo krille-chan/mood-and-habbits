@@ -2,9 +2,6 @@ import 'package:flutter/widgets.dart';
 
 import 'package:sqflite/sqflite.dart';
 
-import 'package:mood_n_habits/models/mood.dart';
-import 'package:mood_n_habits/models/todo.dart';
-
 Future<void> createSchema(Database database) =>
     database.transaction((transaction) async {
       for (final table in DatabaseTables.values) {
@@ -22,7 +19,7 @@ enum DatabaseTables {
     '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, finishedAt INTEGER, startDate INTEGER, dueDate INTEGER, sortOrder INTEGER NOT NULL)',
   ),
   habit(
-    '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, interval TEXT NOT NULL, days TEXT, emoji TEXT)',
+    '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, interval TEXT NOT NULL, days TEXT, emoji TEXT, sortOrder INTEGER NOT NULL)',
   ),
   habitAchieved(
     '(id INTEGER PRIMARY KEY, habitId INTEGER NOT NULL, createdAt INTEGER NOT NULL, label TEXT)',
@@ -33,11 +30,6 @@ enum DatabaseTables {
 
   final String creationQueryColumns;
 }
-
-const Set<String> databaseTables = {
-  Mood.databaseRowName,
-  Todo.databaseRowName,
-};
 
 Future<void> upgradeSchema(
   Database database,

@@ -13,6 +13,7 @@ class Habit extends Task {
     required this.interval,
     required this.days,
     required this.emoji,
+    super.sortOrder,
   });
 
   @override
@@ -32,6 +33,7 @@ class Habit extends Task {
             HabitInterval.values.singleWhere((i) => i.name == row['interval']),
         days: (row['days'] as String?)?.split(',').map(int.parse).toList(),
         emoji: row['emoji'] as String?,
+        sortOrder: row['sortOrder'] as int?,
       );
 }
 
