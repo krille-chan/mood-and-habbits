@@ -86,6 +86,7 @@ class TodosPage extends StatelessWidget {
                               reordering: reordering,
                               todo: todos[i],
                               toggleDone: (b) => state.toggleDone(
+                                context,
                                 todos[i],
                                 b == true,
                               ),

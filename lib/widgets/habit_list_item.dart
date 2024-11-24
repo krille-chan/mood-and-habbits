@@ -46,6 +46,7 @@ class HabitListItem extends StatelessWidget {
         elevation: flying ? 4 : 0,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ListTile(
               leading: CircleAvatar(
@@ -118,7 +119,11 @@ class HabitListItem extends StatelessWidget {
             if (description != null)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(description),
+                child: SelectableText(
+                  description,
+                  style: theme.textTheme.labelSmall,
+                  textAlign: TextAlign.left,
+                ),
               ),
             if (settings != null)
               SizedBox(
@@ -243,7 +248,9 @@ class HabitListItem extends StatelessWidget {
                     );
                   },
                 ),
-              ),
+              )
+            else
+              const SizedBox(height: 16),
           ],
         ),
       ),

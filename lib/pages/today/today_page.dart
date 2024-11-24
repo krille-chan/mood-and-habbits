@@ -214,6 +214,7 @@ class TodayPage extends StatelessWidget {
                         reordering: false,
                         achieved: habits[i].achieved,
                         onSetAchieved: (value, date) => state.setAchieved(
+                          context,
                           habits[i].habit,
                           value,
                           date,
@@ -242,6 +243,7 @@ class TodayPage extends StatelessWidget {
                         todo: todos[i],
                         reordering: false,
                         toggleDone: (done) => state.toggleDone(
+                          context,
                           todos[i],
                           done == true,
                         ),

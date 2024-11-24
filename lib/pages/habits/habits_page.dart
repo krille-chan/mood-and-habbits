@@ -62,6 +62,7 @@ class HabitsPage extends StatelessWidget {
                               habit: habits[i].habit,
                               achieved: habits[i].achieved,
                               onSetAchieved: (value, date) => state.setAchieved(
+                                context,
                                 habits[i].habit,
                                 value,
                                 date,
@@ -74,6 +75,7 @@ class HabitsPage extends StatelessWidget {
                               flying: true,
                               achieved: habits[i].achieved,
                               onSetAchieved: (value, date) => state.setAchieved(
+                                context,
                                 habits[i].habit,
                                 value,
                                 date,
@@ -100,6 +102,7 @@ class HabitsPage extends StatelessWidget {
                               ),
                               achieved: habits[i].achieved,
                               onSetAchieved: (value, date) => state.setAchieved(
+                                context,
                                 habits[i].habit,
                                 value,
                                 date,

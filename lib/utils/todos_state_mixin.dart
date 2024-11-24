@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_confetti/flutter_confetti.dart';
+
 import 'package:mood_n_habits/models/app_state.dart';
 import 'package:mood_n_habits/models/todo.dart';
 import 'package:mood_n_habits/widgets/todo_creation_bottom_sheet.dart';
@@ -23,8 +25,14 @@ mixin TodosStateMixin {
     todos.value = newTodos;
   }
 
-  void toggleDone(Todo todo, bool done) async {
+  void toggleDone(BuildContext context, Todo todo, bool done) async {
     HapticFeedback.mediumImpact();
+    if (done) {
+      Confetti.launch(
+        context,
+        options: const ConfettiOptions(particleCount: 100, spread: 70, y: 0.6),
+      );
+    }
     await appState.updateTodo(
       Todo(
         databaseId: todo.databaseId,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_confetti/flutter_confetti.dart';
+
 import 'package:mood_n_habits/models/app_state.dart';
 import 'package:mood_n_habits/models/habit.dart';
 import 'package:mood_n_habits/models/habit_achieved.dart';
@@ -56,11 +58,18 @@ mixin HabitsStateMixin {
   }
 
   void setAchieved(
+    BuildContext context,
     Habit habit,
     HabitAchievedValue? value,
     DateTime? date,
   ) async {
     HapticFeedback.mediumImpact();
+    if (value == HabitAchievedValue.achieved) {
+      Confetti.launch(
+        context,
+        options: const ConfettiOptions(particleCount: 100, spread: 70, y: 0.6),
+      );
+    }
     date ??= DateTime.now().dateOnly;
 
     if (value == null || habit.interval != HabitInterval.continuesly) {
