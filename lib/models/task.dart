@@ -1,20 +1,20 @@
-abstract class Task {
-  final int? databaseId;
+import 'package:mood_n_habits/models/default_database_item.dart';
+
+abstract class Task extends DefaultDatabaseItem {
   final String title;
   final String? description;
-  final DateTime createdAt;
 
   const Task({
-    this.databaseId,
+    super.databaseId,
     required this.title,
     this.description,
-    required this.createdAt,
+    required super.createdAt,
   });
 
+  @override
   Map<String, Object?> toDatabaseRow() => {
-        if (databaseId != null) 'id': databaseId,
+        ...super.toDatabaseRow(),
         'title': title,
         if (description != null) 'description': description,
-        'createdAt': createdAt.millisecondsSinceEpoch,
       };
 }

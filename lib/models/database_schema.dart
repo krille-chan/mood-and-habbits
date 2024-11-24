@@ -24,6 +24,9 @@ enum DatabaseTables {
   habit(
     '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, interval TEXT NOT NULL, days TEXT, emoji TEXT)',
   ),
+  habitAchieved(
+    '(id INTEGER PRIMARY KEY, habitId INTEGER NOT NULL, createdAt INTEGER NOT NULL, label TEXT)',
+  ),
   ;
 
   const DatabaseTables(this.creationQueryColumns);
@@ -42,10 +45,5 @@ Future<void> upgradeSchema(
   int newVersion,
 ) async {
   debugPrint('Upgrade Database from version $oldVersion to $newVersion');
-
-  if (oldVersion == 1 && newVersion == 2) {
-    debugPrint('Add column Mood.label');
-    await database
-        .execute('ALTER TABLE ${Mood.databaseRowName} ADD COLUMN label TEXT');
-  }
+  // TODO: Implement database migration
 }

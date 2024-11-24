@@ -29,7 +29,7 @@ class AppState {
         path.join(directory, '${AppConstants.applicationName}.sqflite'),
         onOpen: createSchema,
         onUpgrade: upgradeSchema,
-        version: 2,
+        version: 1,
       ),
       preferences,
       ValueNotifier(

@@ -8,6 +8,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:mood_n_habits/models/habit.dart';
+import 'package:mood_n_habits/models/habit_achieved.dart';
 import 'package:mood_n_habits/models/mood.dart';
 import 'package:mood_n_habits/models/todo.dart';
 
@@ -51,6 +52,20 @@ void main() {
     expect(
       Habit.fromDatabaseRow(habit.toDatabaseRow()).toDatabaseRow(),
       habit.toDatabaseRow(),
+    );
+  });
+  test('HabitAchieved', () {
+    final habitAchieved = HabitAchieved(
+      databaseId: 0,
+      label: 'test',
+      createdAt: DateTime.now(),
+      habbitId: 0,
+      value: HabitAchievedValue.notAchieved,
+    );
+    expect(
+      HabitAchieved.fromDatabaseRow(habitAchieved.toDatabaseRow())
+          .toDatabaseRow(),
+      habitAchieved.toDatabaseRow(),
     );
   });
 }
