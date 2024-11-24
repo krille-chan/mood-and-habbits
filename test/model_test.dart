@@ -60,7 +60,7 @@ void main() {
       databaseId: 0,
       label: 'test',
       createdAt: DateTime.now(),
-      habbitId: 0,
+      habitId: 0,
       value: HabitAchievedValue.notAchieved,
     );
     expect(

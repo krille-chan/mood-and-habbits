@@ -22,7 +22,7 @@ enum DatabaseTables {
     '(id INTEGER PRIMARY KEY, title TEXT NO NULL, description TEXT, createdAt INTEGER NOT NULL, interval TEXT NOT NULL, days TEXT, emoji TEXT, sortOrder INTEGER NOT NULL)',
   ),
   habitAchieved(
-    '(id INTEGER PRIMARY KEY, habitId INTEGER NOT NULL, createdAt INTEGER NOT NULL, label TEXT)',
+    '(id INTEGER PRIMARY KEY, habitId INTEGER NOT NULL, createdAt INTEGER NOT NULL, label TEXT, value TEXT NOT NULL)',
   ),
   ;
 

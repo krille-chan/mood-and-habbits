@@ -52,7 +52,7 @@ class BottomNavigationShell extends StatelessWidget {
           ),
           NavigationDestination(
             icon: const Icon(Icons.check_circle_outlined),
-            selectedIcon: const Icon(Icons.list),
+            selectedIcon: const Icon(Icons.check_circle),
             label: context.l10n.todos,
           ),
           NavigationDestination(

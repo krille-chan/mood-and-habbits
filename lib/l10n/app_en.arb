@@ -51,5 +51,17 @@
     "dueTime": "Due",
     "oneTimeTodos": "One-time todos",
     "addOneTimeTodo": "Add one-time todo",
-    "habit": "Habit"
+    "habit": "Habit",
+    "newHabit": "New habit",
+    "edit": "Edit",
+    "delete": "Delete",
+    "daily": "Daily",
+    "monthDays": "Monthdays: {days}",
+    "@monthDays": {
+        "type": "text",
+        "placeholders": {
+            "days": {}
+        }
+    },
+    "continuesly": "Continuesly"
 }

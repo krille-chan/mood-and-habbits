@@ -38,6 +38,7 @@ class TodosPage extends StatelessWidget {
                         ),
                         onPressed: state.toggleReordering,
                       ),
+                      const SizedBox(height: 64),
                     ],
             ),
             floatingActionButton: FloatingActionButton.extended(

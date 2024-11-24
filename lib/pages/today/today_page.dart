@@ -9,6 +9,7 @@ import 'package:mood_n_habits/models/todo.dart';
 import 'package:mood_n_habits/pages/today/today_page_state.dart';
 import 'package:mood_n_habits/utils/get_l10n.dart';
 import 'package:mood_n_habits/utils/same_day.dart';
+import 'package:mood_n_habits/widgets/habit_list_item.dart';
 import 'package:mood_n_habits/widgets/todo_list_item.dart';
 
 class TodayPage extends StatelessWidget {
@@ -192,6 +193,35 @@ class TodayPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                ValueListenableBuilder(
+                  valueListenable: state.habits,
+                  builder: (context, habits, _) {
+                    if (habits == null) {
+                      return const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      itemCount: habits.length,
+                      itemBuilder: (context, i) => HabitListItem(
+                        habit: habits[i].habit,
+                        reordering: false,
+                        achieved: habits[i].achieved,
+                        onSetAchieved: (value, date) => state.setAchieved(
+                          habits[i].habit,
+                          value,
+                          date,
+                        ),
+                      ),
+                    );
+                  },
+                ),
                 ValueListenableBuilder<List<Todo>?>(
                   valueListenable: state.todos,
                   builder: (context, todos, _) {
@@ -206,7 +236,7 @@ class TodayPage extends StatelessWidget {
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       itemCount: todos.length,
                       itemBuilder: (context, i) => TodoListItem(
                         todo: todos[i],
@@ -221,6 +251,7 @@ class TodayPage extends StatelessWidget {
                     );
                   },
                 ),
+                const SizedBox(height: 64),
               ],
             ),
           ),
@@ -232,20 +263,18 @@ class TodayPage extends StatelessWidget {
             closeButtonBuilder: DefaultFloatingActionButtonBuilder(
               child: const Icon(Icons.close_outlined),
             ),
-            type: ExpandableFabType.fan,
+            type: ExpandableFabType.up,
             distance: 70,
             children: [
-              FloatingActionButton.extended(
+              FloatingActionButton(
                 heroTag: null,
-                onPressed: null,
-                icon: const Icon(Icons.sports_score_outlined),
-                label: Text(context.l10n.habit),
+                onPressed: () => state.createHabit(context),
+                child: const Icon(Icons.sports_score_outlined),
               ),
-              FloatingActionButton.extended(
+              FloatingActionButton(
                 heroTag: null,
                 onPressed: () => state.createTodo(context),
-                icon: const Icon(Icons.check_circle_outlined),
-                label: Text(context.l10n.todo),
+                child: const Icon(Icons.check_circle_outlined),
               ),
             ],
           ),

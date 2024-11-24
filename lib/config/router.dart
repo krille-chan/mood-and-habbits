@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:mood_n_habits/models/app_state.dart';
 import 'package:mood_n_habits/pages/habits/habits_page.dart';
+import 'package:mood_n_habits/pages/habits/habits_page_state.dart';
 import 'package:mood_n_habits/pages/mood_stats/mood_stats_page.dart';
 import 'package:mood_n_habits/pages/mood_stats/mood_stats_state.dart';
 import 'package:mood_n_habits/pages/settings/settings_page.dart';
@@ -26,7 +27,8 @@ GoRouter buildRouter(AppState appState) => GoRouter(
               routes: [
                 GoRoute(
                   path: '/habits',
-                  builder: (context, state) => const HabitsPage(),
+                  builder: (context, state) =>
+                      HabitsPage(HabitsPageState(appState)),
                 ),
                 GoRoute(
                   path: '/todos',

@@ -9,9 +9,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:mood_n_habits/config/app_constants.dart';
 import 'package:mood_n_habits/models/database_schema.dart';
 import 'package:mood_n_habits/models/habit.dart';
+import 'package:mood_n_habits/models/habit_achieved.dart';
 import 'package:mood_n_habits/models/mood.dart';
 import 'package:mood_n_habits/models/preferences_extensions.dart';
 import 'package:mood_n_habits/models/todo.dart';
+import 'package:mood_n_habits/utils/same_day.dart';
 
 class AppState {
   final Database _database;
@@ -143,13 +145,84 @@ class AppState {
         (minSortOrderResult.singleOrNull?['min(sortOrder)'] as int?) ?? 0;
 
     await _database.insert(
-      DatabaseTables.todo.name,
+      DatabaseTables.habit.name,
       {
         ...habit.toDatabaseRow(),
         'sortOrder': minSortOrder - 1,
       },
     );
   }
+
+  Future<List<({Habit habit, List<HabitAchieved> achieved})>> getAllHabits({
+    DateTime? activeForDate,
+  }) async {
+    final date = activeForDate?.dateOnly;
+
+    final allHabits = await _database
+        .query(
+          DatabaseTables.habit.name,
+          orderBy: 'sortOrder',
+        )
+        .then(
+          (rows) => rows.map((json) => Habit.fromDatabaseRow(json)).toList(),
+        );
+
+    if (date != null) {
+      allHabits.removeWhere((habit) {
+        switch (habit.interval) {
+          case HabitInterval.continuesly:
+          case HabitInterval.daily:
+            return false;
+          case HabitInterval.daysInWeek:
+            return habit.days?.contains(date.weekday) == false;
+          case HabitInterval.daysInMonth:
+            return habit.days?.contains(date.day) == false;
+        }
+      });
+    }
+
+    final habitAchievedSince = date?.millisecondsSinceEpoch ??
+        DateTime.now()
+            .subtract(const Duration(days: 10))
+            .dateOnly
+            .millisecondsSinceEpoch;
+
+    final habitAndAchievedMap = <({
+      Habit habit,
+      List<HabitAchieved> achieved,
+    })>[];
+
+    for (final habit in allHabits) {
+      habitAndAchievedMap.add(
+        (
+          habit: habit,
+          achieved: await _database.query(
+            DatabaseTables.habitAchieved.name,
+            where: 'habitId = ? AND createdAt >= ?',
+            whereArgs: [habit.databaseId, habitAchievedSince],
+          ).then(
+            (rows) =>
+                rows.map((row) => HabitAchieved.fromDatabaseRow(row)).toList(),
+          ),
+        ),
+      );
+    }
+
+    return habitAndAchievedMap;
+  }
+
+  Future<void> updateHabit(Habit habit) => _database.update(
+        DatabaseTables.habit.name,
+        habit.toDatabaseRow(),
+        where: 'id = ?',
+        whereArgs: [habit.databaseId],
+      );
+
+  Future<void> deleteHabit(int id) => _database.delete(
+        DatabaseTables.habit.name,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
 
   Future<void> updateTodo(Todo todo) => _database.update(
         DatabaseTables.todo.name,
@@ -170,13 +243,7 @@ class AppState {
       );
 
   Future<List<Todo>> getAllTodos({DateTime? activeForDate}) {
-    final today = activeForDate == null
-        ? null
-        : DateTime(
-            activeForDate.year,
-            activeForDate.month,
-            activeForDate.day,
-          );
+    final today = activeForDate?.dateOnly;
     final todayEnd = today?.add(const Duration(days: 1));
     return _database
         .query(
@@ -198,26 +265,64 @@ class AppState {
         );
   }
 
-  Future<void> changeTodoOrders(Todo from, Todo to) {
-    assert(from.databaseId != to.databaseId);
+  Future<void> createHabitAchieved(HabitAchieved achieved) => _database.insert(
+        DatabaseTables.habitAchieved.name,
+        achieved.toDatabaseRow(),
+      );
+
+  Future<void> deleteHabitAchieved(int habitId, DateTime date) =>
+      _database.delete(
+        DatabaseTables.habitAchieved.name,
+        where: 'habitId = ? AND createdAt >= ? AND createdAt < ?',
+        whereArgs: [
+          habitId,
+          date.millisecondsSinceEpoch,
+          date.add(const Duration(days: 1)).millisecondsSinceEpoch,
+        ],
+      );
+
+  Future<void> changeTodoOrders(Todo from, Todo to) => _changeSortOrders(
+        DatabaseTables.todo.name,
+        from.databaseId!,
+        to.databaseId!,
+        from.sortOrder!,
+        to.sortOrder!,
+      );
+
+  Future<void> changeHabitOrders(Habit from, Habit to) => _changeSortOrders(
+        DatabaseTables.habit.name,
+        from.databaseId!,
+        to.databaseId!,
+        from.sortOrder!,
+        to.sortOrder!,
+      );
+
+  Future<void> _changeSortOrders(
+    String table,
+    int fromDatabaseId,
+    int toDatabaseId,
+    int fromSortOrder,
+    int toSortOrder,
+  ) {
+    assert(fromDatabaseId != toDatabaseId);
 
     return _database.transaction((transaction) async {
-      if (to.sortOrder! > from.sortOrder!) {
+      if (toSortOrder > fromSortOrder) {
         await transaction.rawUpdate(
-          'UPDATE ${DatabaseTables.todo.name} SET sortOrder = sortOrder-1 WHERE sortOrder <= ?',
-          [to.sortOrder],
+          'UPDATE $table SET sortOrder = sortOrder-1 WHERE sortOrder <= ?',
+          [toSortOrder],
         );
       } else {
         await transaction.rawUpdate(
-          'UPDATE ${DatabaseTables.todo.name} SET sortOrder = sortOrder+1 WHERE sortOrder >= ?',
-          [to.sortOrder],
+          'UPDATE $table SET sortOrder = sortOrder+1 WHERE sortOrder >= ?',
+          [toSortOrder],
         );
       }
       await transaction.update(
-        DatabaseTables.todo.name,
-        {'sortOrder': to.sortOrder},
+        table,
+        {'sortOrder': toSortOrder},
         where: 'id = ?',
-        whereArgs: [from.databaseId],
+        whereArgs: [fromDatabaseId],
       );
     });
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:mood_n_habits/models/app_state.dart';
 import 'package:mood_n_habits/models/todo.dart';
@@ -23,6 +24,7 @@ mixin TodosStateMixin {
   }
 
   void toggleDone(Todo todo, bool done) async {
+    HapticFeedback.mediumImpact();
     await appState.updateTodo(
       Todo(
         databaseId: todo.databaseId,
@@ -32,6 +34,7 @@ mixin TodosStateMixin {
         finishedAt: done ? DateTime.now() : null,
         startDate: todo.startDate,
         dueDate: todo.dueDate,
+        sortOrder: todo.sortOrder,
       ),
     );
     loadTodos();

@@ -47,14 +47,22 @@ class TodoListItem extends StatelessWidget {
                   ),
                   trailing: const Icon(Icons.reorder_outlined),
                 )
-              : CheckboxListTile.adaptive(
-                  value: todo.finishedAt != null,
-                  onChanged: toggleDone,
+              : ListTile(
+                  onTap: () => toggleDone?.call(todo.finishedAt == null),
                   title: _TodoListItemTitle(todo: todo),
                   subtitle: _TodoListItemSubtitle(
                     todo: todo,
                     onEdit: onEdit,
                     onDelete: onDelete,
+                  ),
+                  trailing: Icon(
+                    todo.finishedAt == null
+                        ? Icons.circle_outlined
+                        : Icons.check_circle,
+                    size: 32,
+                    color: todo.finishedAt != null
+                        ? theme.colorScheme.primary
+                        : null,
                   ),
                 ),
         ),

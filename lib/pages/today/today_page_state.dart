@@ -5,18 +5,20 @@ import 'package:go_router/go_router.dart';
 import 'package:mood_n_habits/models/app_state.dart';
 import 'package:mood_n_habits/models/mood.dart';
 import 'package:mood_n_habits/utils/get_l10n.dart';
+import 'package:mood_n_habits/utils/habits_state_mixin.dart';
 import 'package:mood_n_habits/utils/same_day.dart';
 import 'package:mood_n_habits/utils/todos_state_mixin.dart';
 import 'package:mood_n_habits/widgets/adaptive_dialog_button.dart';
 import 'package:mood_n_habits/widgets/adaptive_dialog_textfield.dart';
 
-class TodayPageState with TodosStateMixin {
+class TodayPageState with TodosStateMixin, HabitsStateMixin {
   @override
-  DateTime get activeForDate => date.value ?? DateTime.now();
+  DateTime get activeForDate => date.value ?? DateTime.now().dateOnly;
 
   TodayPageState(AppState appState) {
     this.appState = appState;
     loadTodos();
+    loadHabits();
   }
 
   final ValueNotifier<DateTime?> date = ValueNotifier(null);
