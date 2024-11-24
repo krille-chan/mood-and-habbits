@@ -174,7 +174,7 @@ class AppState {
           case HabitInterval.daily:
             return false;
           case HabitInterval.daysInWeek:
-            return habit.days?.contains(date.weekday) == false;
+            return habit.days?.contains(date.weekday % 7) == false;
           case HabitInterval.daysInMonth:
             return habit.days?.contains(date.day) == false;
         }
