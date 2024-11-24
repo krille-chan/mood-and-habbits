@@ -50,7 +50,7 @@ class Habit extends Task {
       case HabitInterval.daysInWeek:
         return days!
             .map(
-              (day) => DateFormat.E(context.l10n)
+              (day) => DateFormat.E(context.l10n.localeName)
                   .format(monday.add(Duration(days: day))),
             )
             .join(', ');

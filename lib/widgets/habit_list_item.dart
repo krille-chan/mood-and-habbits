@@ -140,7 +140,7 @@ class HabitListItem extends StatelessWidget {
                       HabitInterval.daysInMonth =>
                         habit.days!.contains(tileDate.day),
                       HabitInterval.daysInWeek =>
-                        habit.days!.contains(tileDate.weekday),
+                        habit.days!.contains(tileDate.weekday % 7),
                       HabitInterval.continuesly => true,
                       HabitInterval.daily => true,
                     };
